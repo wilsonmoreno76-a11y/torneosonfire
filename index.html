@@ -22,32 +22,40 @@
 </head>
 <body class="p-4 pb-10">
     <header class="text-center mb-6">
-        <h1 class="text-3xl font-black italic uppercase italic">ON FIRE <span class="text-orange-500">PADEL</span></h1>
-        <div class="flex justify-center gap-4 mt-2">
-            <a href="https://www.instagram.com/onfirepadel" target="_blank" class="text-pink-500 text-xl"><i class="fab fa-instagram"></i></a>
-            <p id="sala-name" class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Digital Board</p>
+        <h1 class="text-3xl font-black italic uppercase italic tracking-tighter">ON FIRE <span class="text-orange-500">PADEL</span></h1>
+        <div class="flex flex-col items-center justify-center gap-1 mt-2">
+            <a href="https://www.instagram.com/onfirepadel" target="_blank" class="flex items-center gap-2 bg-pink-600/20 px-4 py-1 rounded-full border border-pink-500/30">
+                <i class="fab fa-instagram text-pink-500"></i>
+                <span class="text-[10px] font-black uppercase tracking-widest text-pink-500">SÍGUENOS @onfirepadel</span>
+            </a>
+            <p id="display-torneo-name" class="text-[11px] text-slate-500 font-bold uppercase tracking-[0.2em] mt-2">Digital Board</p>
         </div>
     </header>
 
     <section id="setup-section" class="max-w-xl mx-auto space-y-4">
         <div class="onfire-card p-6">
+            <div class="mb-4">
+                <label class="block text-[10px] font-bold text-slate-400 mb-1 uppercase">Nombre del Torneo</label>
+                <input type="text" id="input-torneo-name" placeholder="EJ: TEACHERS BATTLE" class="onfire-input w-full p-3 text-lg font-black uppercase border-orange-500/50">
+            </div>
+            
             <div class="grid grid-cols-2 gap-4 mb-4">
                 <button id="btn-parejas" onclick="setModo('parejas')" class="py-3 rounded-lg font-bold border-2 border-orange-500 bg-orange-500">PAREJAS</button>
                 <button id="btn-individual" onclick="setModo('individual')" class="py-3 rounded-lg font-bold border-2 border-slate-700">INDIVIDUAL</button>
             </div>
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label id="label-total" class="block text-[10px] font-bold text-slate-400 mb-1 uppercase">Total</label>
+                    <label id="label-total" class="block text-[10px] font-bold text-slate-400 mb-1 uppercase">Total Jugadores/Parejas</label>
                     <input type="number" id="num-total" value="6" onchange="crearInputsNombres()" class="onfire-input w-full p-3 text-xl font-black">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-bold text-slate-400 mb-1 uppercase">Pistas</label>
+                    <label class="block text-[10px] font-bold text-slate-400 mb-1 uppercase">Canchas Disponibles</label>
                     <input type="number" id="pistas-limit" value="3" class="onfire-input w-full p-3 text-xl font-black text-orange-500">
                 </div>
             </div>
         </div>
         <div id="grid-nombres" class="grid grid-cols-2 gap-2"></div>
-        <button onclick="iniciarTorneo()" class="onfire-btn w-full py-5 text-xl shadow-lg">GENERAR 🔥</button>
+        <button onclick="iniciarTorneo()" class="onfire-btn w-full py-5 text-xl shadow-lg">GENERAR TORNEO 🔥</button>
     </section>
 
     <section id="tournament-section" class="hidden max-w-2xl mx-auto space-y-6">
@@ -60,23 +68,23 @@
         <div id="pistas-container" class="space-y-4"></div>
         
         <div id="descanso-section" class="hidden">
-            <h3 class="text-[10px] font-black text-slate-500 uppercase mb-2 ml-2">En espera</h3>
+            <h3 class="text-[10px] font-black text-slate-500 uppercase mb-2 ml-2 tracking-widest">En espera</h3>
             <div id="descanso-container" class="grid grid-cols-2 gap-2"></div>
         </div>
 
         <div id="podio-visual" class="onfire-card p-6 text-center">
-            <h3 class="text-orange-500 font-black italic mb-6 uppercase">TOP PLAYERS</h3>
+            <h3 class="text-orange-500 font-black italic mb-6 uppercase tracking-widest">TOP PLAYERS</h3>
             <div class="flex items-end justify-center gap-2">
                 <div class="flex flex-col items-center">
-                    <span id="name-2" class="text-[10px] font-bold mb-2 w-20 truncate">---</span>
+                    <span id="name-2" class="text-[10px] font-bold mb-2 w-20 truncate uppercase">---</span>
                     <div class="podium-2 rounded-t-lg flex items-center justify-center text-2xl font-black">2</div>
                 </div>
                 <div class="flex flex-col items-center">
-                    <span id="name-1" class="text-[12px] font-black mb-2 text-orange-500 w-24 truncate">---</span>
+                    <span id="name-1" class="text-[12px] font-black mb-2 text-orange-500 w-24 truncate uppercase">---</span>
                     <div class="podium-1 rounded-t-lg flex items-center justify-center text-4xl font-black">1</div>
                 </div>
                 <div class="flex flex-col items-center">
-                    <span id="name-3" class="text-[10px] font-bold mb-2 w-20 truncate">---</span>
+                    <span id="name-3" class="text-[10px] font-bold mb-2 w-20 truncate uppercase">---</span>
                     <div class="podium-3 rounded-t-lg flex items-center justify-center text-2xl font-black">3</div>
                 </div>
             </div>
@@ -85,15 +93,15 @@
         <div class="onfire-card p-4">
             <div id="lista-ranking" class="space-y-2 mb-6"></div>
             <div class="grid grid-cols-2 gap-2">
-                <button onclick="shareWhatsApp()" class="bg-green-600 p-3 rounded-lg font-bold text-xs uppercase"><i class="fab fa-whatsapp mr-2"></i> Compartir Ranking</button>
-                <button onclick="confirmarReinicio()" class="bg-slate-700 p-3 rounded-lg font-bold text-xs uppercase">Reiniciar</button>
+                <button onclick="shareWhatsApp()" class="bg-green-600 p-3 rounded-lg font-bold text-[10px] uppercase"><i class="fab fa-whatsapp mr-2"></i> Compartir</button>
+                <button onclick="confirmarReinicio()" class="bg-slate-700 p-3 rounded-lg font-bold text-[10px] uppercase">Reiniciar</button>
             </div>
         </div>
     </section>
 
     <script>
         const CLOUD_URL = 'https://script.google.com/macros/s/AKfycbxWoZdkIXViCpP-K1_QEC9r61DyFXfAzuoCig9u7Wx7ulXaBxaury6a2WFOFU2ukmMSwg/exec';
-        let state = { modo: 'parejas', jugadores: [], ronda: 1, pistasMax: 3, partidos: {}, activo: false };
+        let state = { nombreTorneo: '', modo: 'parejas', jugadores: [], ronda: 1, pistasMax: 3, partidos: {}, activo: false };
 
         function setModo(m) {
             state.modo = m;
@@ -119,10 +127,14 @@
         }
 
         function iniciarTorneo() {
+            state.nombreTorneo = document.getElementById('input-torneo-name').value.toUpperCase() || 'DIGITAL BOARD';
             state.pistasMax = parseInt(document.getElementById('pistas-limit').value);
             state.activo = true;
+            
+            document.getElementById('display-torneo-name').innerText = state.nombreTorneo;
             document.getElementById('setup-section').classList.add('hidden');
             document.getElementById('tournament-section').classList.remove('hidden');
+            
             renderRonda();
             saveLocal();
         }
@@ -195,12 +207,12 @@
 
         function shareWhatsApp() {
             const sorted = [...state.jugadores].sort((a,b) => b.pts - a.pts);
-            let msg = `🔥 *RANKING ON FIRE PADEL* 🔥%0A%0A`;
+            let msg = `🔥 *${state.nombreTorneo || 'RANKING ON FIRE'}* 🔥%0A%0A`;
             sorted.slice(0, 10).forEach((j, i) => {
                 let icon = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : "🔹";
                 msg += `${icon} *${j.nombre}*: ${j.pts} pts%0A`;
             });
-            msg += `%0A🎾 _Torneo gestionado por @onfirepadel_%0A🚀 bit.ly/torneosonfire`;
+            msg += `%0A🎾 _Gestionado por @onfirepadel_%0A🚀 bit.ly/torneosonfire`;
             window.open(`https://wa.me/?text=${msg}`);
         }
 
@@ -219,8 +231,9 @@
             const saved = localStorage.getItem('onfire_state');
             if (saved) {
                 const parsed = JSON.parse(saved);
-                if (parsed.activo && confirm("Se encontró un torneo en curso. ¿Deseas recuperarlo?")) {
+                if (parsed.activo && confirm("Se encontró un torneo en curso (" + (parsed.nombreTorneo || 'Sin nombre') + "). ¿Deseas recuperarlo?")) {
                     state = parsed;
+                    document.getElementById('display-torneo-name').innerText = state.nombreTorneo || 'DIGITAL BOARD';
                     document.getElementById('setup-section').classList.add('hidden');
                     document.getElementById('tournament-section').classList.remove('hidden');
                     setModo(state.modo);
