@@ -17,6 +17,7 @@
         .podium-1 { background: linear-gradient(to top, #f97316, #fb923c); height: 120px; width: 80px; }
         .podium-2 { background: linear-gradient(to top, #64748b, #94a3b8); height: 90px; width: 80px; }
         .podium-3 { background: linear-gradient(to top, #78350f, #b45309); height: 70px; width: 80px; }
+        .btn-nav:disabled { opacity: 0.3; cursor: not-allowed; }
     </style>
 </head>
 <body class="p-4 pb-10">
@@ -51,9 +52,9 @@
 
     <section id="tournament-section" class="hidden max-w-2xl mx-auto space-y-6">
         <div class="flex items-center justify-between gap-2">
-            <button onclick="cambiarRonda(-1)" class="bg-slate-800 p-4 rounded-xl font-bold"><i class="fas fa-chevron-left"></i></button>
+            <button onclick="cambiarRonda(-1)" id="btn-prev" class="bg-slate-800 p-4 rounded-xl font-bold btn-nav"><i class="fas fa-chevron-left"></i></button>
             <div id="label-ronda" class="bg-orange-600 flex-1 text-center py-4 rounded-xl font-black text-xl italic uppercase">RONDA 1</div>
-            <button onclick="cambiarRonda(1)" class="bg-slate-800 p-4 rounded-xl font-bold"><i class="fas fa-chevron-right"></i></button>
+            <button onclick="cambiarRonda(1)" id="btn-next" class="bg-slate-800 p-4 rounded-xl font-bold btn-nav"><i class="fas fa-chevron-right"></i></button>
         </div>
 
         <div id="pistas-container" class="space-y-4"></div>
@@ -85,7 +86,7 @@
             <div id="lista-ranking" class="space-y-2 mb-6"></div>
             <div class="grid grid-cols-2 gap-2">
                 <button onclick="shareWhatsApp()" class="bg-green-600 p-3 rounded-lg font-bold text-xs uppercase"><i class="fab fa-whatsapp mr-2"></i> Compartir Ranking</button>
-                <button onclick="location.reload()" class="bg-slate-700 p-3 rounded-lg font-bold text-xs uppercase">Reiniciar</button>
+                <button onclick="confirmarReinicio()" class="bg-slate-700 p-3 rounded-lg font-bold text-xs uppercase">Reiniciar</button>
             </div>
         </div>
     </section>
@@ -127,6 +128,12 @@
 
             let ids = state.jugadores.map(j => j.id);
             if(ids.length % 2 !== 0) ids.push(-1);
+            
+            // Calculamos el máximo de rondas posibles para un "Todos contra todos"
+            const maxRondas = ids.length - 1;
+            document.getElementById('btn-next').disabled = state.ronda >= maxRondas;
+            document.getElementById('btn-prev').disabled = state.ronda <= 1;
+
             let rotated = [ids[0], ...rotateArray(ids.slice(1), state.ronda - 1)];
             
             let pairings = []; let waiting = [];
@@ -175,10 +182,19 @@
 
         function shareWhatsApp() {
             const sorted = [...state.jugadores].sort((a,b) => b.pts - a.pts);
-            let msg = `🔥 *RANKING ON FIRE PADEL* 🔥\n\n`;
-            sorted.slice(0, 10).forEach((j, i) => msg += `${i+1}️⃣ ${j.nombre}: ${j.pts} pts\n`);
-            msg += `\n🎾 _Torneo gestionado por @onfirepadel_`;
-            window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
+            let msg = `🔥 *RANKING ON FIRE PADEL* 🔥%0A%0A`;
+            sorted.slice(0, 10).forEach((j, i) => {
+                let icon = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : "🔹";
+                msg += `${icon} *${j.nombre}*: ${j.pts} pts%0A`;
+            });
+            msg += `%0A🎾 _Torneo gestionado por @onfirepadel_%0A🚀 bit.ly/torneosonfire`;
+            window.open(`https://wa.me/?text=${msg}`);
+        }
+
+        function confirmarReinicio() {
+            if (confirm("¿Estás seguro de que deseas reiniciar el torneo? Se perderán todos los puntajes actuales.")) {
+                location.reload();
+            }
         }
 
         function rotateArray(arr, k) { k = k % arr.length; return arr.slice(k).concat(arr.slice(0, k)); }
@@ -187,4 +203,4 @@
         window.onload = () => setModo('parejas');
     </script>
 </body>
-</html>
+</html> 
