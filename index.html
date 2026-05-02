@@ -93,7 +93,7 @@
 
     <script>
         const CLOUD_URL = 'https://script.google.com/macros/s/AKfycbxWoZdkIXViCpP-K1_QEC9r61DyFXfAzuoCig9u7Wx7ulXaBxaury6a2WFOFU2ukmMSwg/exec';
-        let state = { modo: 'parejas', jugadores: [], ronda: 1, pistasMax: 3, partidos: {} };
+        let state = { modo: 'parejas', jugadores: [], ronda: 1, pistasMax: 3, partidos: {}, activo: false };
 
         function setModo(m) {
             state.modo = m;
@@ -109,15 +109,22 @@
             for(let i=0; i<n; i++) {
                 let def = state.modo === 'parejas' ? `PAREJA ${i+1}` : `JUGADOR ${i+1}`;
                 state.jugadores.push({ id: i, nombre: def, pts: 0 });
-                grid.innerHTML += `<input type="text" value="${def}" onchange="state.jugadores[${i}].nombre=this.value.toUpperCase()" class="onfire-input p-3 text-[10px] font-bold uppercase">`;
+                grid.innerHTML += `<input type="text" value="${def}" onchange="updateNombre(${i}, this.value)" class="onfire-input p-3 text-[10px] font-bold uppercase">`;
             }
+        }
+
+        function updateNombre(id, val) {
+            state.jugadores[id].nombre = val.toUpperCase();
+            saveLocal();
         }
 
         function iniciarTorneo() {
             state.pistasMax = parseInt(document.getElementById('pistas-limit').value);
+            state.activo = true;
             document.getElementById('setup-section').classList.add('hidden');
             document.getElementById('tournament-section').classList.remove('hidden');
             renderRonda();
+            saveLocal();
         }
 
         function renderRonda() {
@@ -129,7 +136,6 @@
             let ids = state.jugadores.map(j => j.id);
             if(ids.length % 2 !== 0) ids.push(-1);
             
-            // Calculamos el máximo de rondas posibles para un "Todos contra todos"
             const maxRondas = ids.length - 1;
             document.getElementById('btn-next').disabled = state.ronda >= maxRondas;
             document.getElementById('btn-prev').disabled = state.ronda <= 1;
@@ -168,7 +174,14 @@
             updateRanking();
         }
 
-        function saveScore(k, t, v, i1, i2) { state.partidos[k][`s${t}`] = parseInt(v)||0; state.partidos[k].ids1 = i1; state.partidos[k].ids2 = i2; updateRanking(); sync(); }
+        function saveScore(k, t, v, i1, i2) { 
+            state.partidos[k][`s${t}`] = parseInt(v)||0; 
+            state.partidos[k].ids1 = i1; 
+            state.partidos[k].ids2 = i2; 
+            updateRanking(); 
+            sync();
+            saveLocal();
+        }
 
         function updateRanking() {
             state.jugadores.forEach(j => j.pts = 0);
@@ -193,14 +206,39 @@
 
         function confirmarReinicio() {
             if (confirm("¿Estás seguro de que deseas reiniciar el torneo? Se perderán todos los puntajes actuales.")) {
+                localStorage.removeItem('onfire_state');
                 location.reload();
             }
         }
 
+        function saveLocal() {
+            localStorage.setItem('onfire_state', JSON.stringify(state));
+        }
+
+        function loadLocal() {
+            const saved = localStorage.getItem('onfire_state');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                if (parsed.activo && confirm("Se encontró un torneo en curso. ¿Deseas recuperarlo?")) {
+                    state = parsed;
+                    document.getElementById('setup-section').classList.add('hidden');
+                    document.getElementById('tournament-section').classList.remove('hidden');
+                    setModo(state.modo);
+                    renderRonda();
+                } else {
+                    localStorage.removeItem('onfire_state');
+                }
+            }
+        }
+
         function rotateArray(arr, k) { k = k % arr.length; return arr.slice(k).concat(arr.slice(0, k)); }
-        function cambiarRonda(v) { state.ronda += v; if(state.ronda<1) state.ronda=1; renderRonda(); window.scrollTo(0,0); }
+        function cambiarRonda(v) { state.ronda += v; if(state.ronda<1) state.ronda=1; renderRonda(); window.scrollTo(0,0); saveLocal(); }
         function sync() { fetch(CLOUD_URL, { method: 'POST', body: JSON.stringify({idTorneo: 'onfire-club', ...state}), mode: 'no-cors' }); }
-        window.onload = () => setModo('parejas');
+        
+        window.onload = () => {
+            loadLocal();
+            if (!state.activo) setModo('parejas');
+        };
     </script>
 </body>
-</html> 
+</html>
