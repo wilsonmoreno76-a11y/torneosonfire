@@ -117,7 +117,7 @@
             for(let i=0; i<n; i++) {
                 let def = state.modo === 'parejas' ? `PAREJA ${i+1}` : `JUGADOR ${i+1}`;
                 state.jugadores.push({ id: i, nombre: def, pts: 0 });
-                grid.innerHTML += `<input type="text" value="${def}" onchange="updateNombre(${i}, this.value)" class="onfire-input p-3 text-[10px] font-bold uppercase">`;
+                grid.innerHTML += `<input type="text" placeholder="${def}" onchange="updateNombre(${i}, this.value)" class="onfire-input p-3 text-[10px] font-bold uppercase">`;
             }
         }
 
