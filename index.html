@@ -178,7 +178,9 @@
                 if(!state.partidos[key]) state.partidos[key] = {s1:0, s2:0};
                 const n1 = m.t1.map(id => state.jugadores[id].nombre).join(" / ");
                 const n2 = m.t2.map(id => state.jugadores[id].nombre).join(" / ");
-                container.innerHTML += `<div class="onfire-card p-4 border-l-4 border-orange-500 relative"><span class="pista-badge absolute -top-2 left-4">CANCHA ${idx+1}</span><div class="flex items-center gap-2 mt-2"><div class="flex-1 text-right font-bold text-[10px] uppercase">${n1}</div><div class="flex gap-1"><input type="number"placeholder="0" value= " onchange="saveScore('${key}',1,this.value,${JSON.stringify(m.t1)},${JSON.stringify(m.t2)})" class="onfire-input w-10 h-10 font-black"> <input type="number" " onchange="saveScore('${key}',2 placeholder="0" value=,this.value,${JSON.stringify(m.t1)},${JSON.stringify(m.t2)})" class="onfire-input w-10 h-10 font-black"></div><div class="flex-1 text-left font-bold text-[10px] uppercase">${n2}</div></div></div>`;
+                
+                // LINEA CORREGIDA: Se arreglaron las comillas y se puso placeholder="0" value=""
+                container.innerHTML += `<div class="onfire-card p-4 border-l-4 border-orange-500 relative"><span class="pista-badge absolute -top-2 left-4">CANCHA ${idx+1}</span><div class="flex items-center gap-2 mt-2"><div class="flex-1 text-right font-bold text-[10px] uppercase">${n1}</div><div class="flex gap-1"><input type="number" placeholder="0" value="" onchange="saveScore('${key}',1,this.value,${JSON.stringify(m.t1)},${JSON.stringify(m.t2)})" class="onfire-input w-10 h-10 font-black"> <input type="number" placeholder="0" value="" onchange="saveScore('${key}',2,this.value,${JSON.stringify(m.t1)},${JSON.stringify(m.t2)})" class="onfire-input w-10 h-10 font-black"></div><div class="flex-1 text-left font-bold text-[10px] uppercase">${n2}</div></div></div>`;
             });
 
             document.getElementById('descanso-section').classList.toggle('hidden', finalWait.length === 0);
