@@ -28,7 +28,7 @@
                 <i class="fab fa-instagram text-orange-500"></i>
                 <span class="text-[10px] font-black uppercase tracking-widest text-white-500">SÍGUENOS @onfirepadel</span>
             </a>
-            <p id="display-torneo-name" class="text-[11px] text-slate-500 font-bold uppercase tracking-[0.2em] mt-2">americano</p>
+            <p id="display-torneo-name" class="text-[11px] text-slate-500 font-bold uppercase tracking-[0.2em] mt-2">AMERICANO</p>
         </div>
     </header>
 
@@ -113,6 +113,7 @@
         function crearInputsNombres() {
             const n = parseInt(document.getElementById('num-total').value);
             const grid = document.getElementById('grid-nombres');
+            if(!n) return;
             grid.innerHTML = ''; state.jugadores = [];
             for(let i=0; i<n; i++) {
                 let def = state.modo === 'parejas' ? `PAREJA ${i+1}` : `JUGADOR ${i+1}`;
@@ -128,7 +129,7 @@
 
         function iniciarTorneo() {
             state.nombreTorneo = document.getElementById('input-torneo-name').value.toUpperCase() || 'DIGITAL BOARD';
-            state.pistasMax = parseInt(document.getElementById('pistas-limit').value);
+            state.pistasMax = parseInt(document.getElementById('pistas-limit').value) || 3;
             state.activo = true;
             
             document.getElementById('display-torneo-name').innerText = state.nombreTorneo;
@@ -176,11 +177,26 @@
             playing.forEach((m, idx) => {
                 const key = `r${state.ronda}c${idx}`;
                 if(!state.partidos[key]) state.partidos[key] = {s1:0, s2:0};
+                
                 const n1 = m.t1.map(id => state.jugadores[id].nombre).join(" / ");
                 const n2 = m.t2.map(id => state.jugadores[id].nombre).join(" / ");
                 
-                // LINEA CORREGIDA: Se arreglaron las comillas y se puso placeholder="0" value=""
-                container.innerHTML += `<div class="onfire-card p-4 border-l-4 border-orange-500 relative"><span class="pista-badge absolute -top-2 left-4">CANCHA ${idx+1}</span><div class="flex items-center gap-2 mt-2"><div class="flex-1 text-right font-bold text-[10px] uppercase">${n1}</div><div class="flex gap-1"><input type="number" placeholder="0" value="" onchange="saveScore('${key}',1,this.value,${JSON.stringify(m.t1)},${JSON.stringify(m.t2)})" class="onfire-input w-10 h-10 font-black"> <input type="number" placeholder="0" value="" onchange="saveScore('${key}',2,this.value,${JSON.stringify(m.t1)},${JSON.stringify(m.t2)})" class="onfire-input w-10 h-10 font-black"></div><div class="flex-1 text-left font-bold text-[10px] uppercase">${n2}</div></div></div>`;
+                // Lógica de visualización: si es 0 muestra placeholder, si es > 0 muestra el valor
+                const val1 = state.partidos[key].s1 === 0 ? '' : state.partidos[key].s1;
+                const val2 = state.partidos[key].s2 === 0 ? '' : state.partidos[key].s2;
+
+                container.innerHTML += `
+                    <div class="onfire-card p-4 border-l-4 border-orange-500 relative">
+                        <span class="pista-badge absolute -top-2 left-4">CANCHA ${idx+1}</span>
+                        <div class="flex items-center gap-2 mt-2">
+                            <div class="flex-1 text-right font-bold text-[10px] uppercase">${n1}</div>
+                            <div class="flex gap-1">
+                                <input type="number" placeholder="0" value="${val1}" oninput="saveScore('${key}',1,this.value,${JSON.stringify(m.t1)},${JSON.stringify(m.t2)})" class="onfire-input w-10 h-10 font-black">
+                                <input type="number" placeholder="0" value="${val2}" oninput="saveScore('${key}',2,this.value,${JSON.stringify(m.t1)},${JSON.stringify(m.t2)})" class="onfire-input w-10 h-10 font-black">
+                            </div>
+                            <div class="flex-1 text-left font-bold text-[10px] uppercase">${n2}</div>
+                        </div>
+                    </div>`;
             });
 
             document.getElementById('descanso-section').classList.toggle('hidden', finalWait.length === 0);
