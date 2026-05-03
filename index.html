@@ -209,7 +209,7 @@
             const sorted = [...state.jugadores].sort((a,b) => b.pts - a.pts);
             let msg = `🔥 *${state.nombreTorneo || 'RANKING ON FIRE'}* 🔥%0A%0A`;
             sorted.slice(0, 10).forEach((j, i) => {
-                let icon = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : "🔹";
+                let icon = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : "🎾";
                 msg += `${icon} *${j.nombre}*: ${j.pts} pts%0A`;
             });
             msg += `%0A🎾 _Gestionado por @onfirepadel_%0A🚀 onfirepadel.com`;
