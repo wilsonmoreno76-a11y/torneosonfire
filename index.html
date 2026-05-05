@@ -25,11 +25,12 @@
     <header class="text-center mb-4">
         <h1 class="text-3xl font-black italic uppercase italic tracking-tighter">ON FIRE <span class="text-orange-500">PADEL</span></h1>
         
+        <!-- PATROCINIO: KUKURUZ GOURMET -->
         <div id="sponsor-space" class="mt-4 max-w-md mx-auto">
             <a href="https://wa.me/573193490940" id="sponsor-link" target="_blank">
                 <div class="sponsor-banner p-2 rounded-xl flex items-center justify-between gap-3 overflow-hidden">
                     <div class="flex items-center gap-2">
-                        <div class="bg-orange-500 w-8 h-8 rounded-lg flex items-center justify-center font-black text-[14px]">🌽</div>
+                        <div class="bg-white-500 w-8 h-8 rounded-lg flex items-center justify-center font-black text-[14px]">🌽</div>
                         <div class="text-left">
                             <p class="text-[9px] text-orange-500 font-black uppercase leading-none">Aliado Especial</p>
                             <p id="sponsor-name" class="text-[11px] font-bold uppercase italic">Kukuruz Gourmet</p>
@@ -251,7 +252,8 @@
                 let icon = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : "🎾";
                 msg += `${icon} *${j.nombre}*: ${j.pts} pts%0A`;
             });
-            msg += `%0A🎾 _${SPONSOR.mensajeWA}_%0A🚀 onfirepadel.com`;
+            // CORRECCIÓN: Ahora incluye el enlace directo del patrocinador
+            msg += `%0A🎾 _${SPONSOR.mensajeWA}_%0A👉 Pedidos: ${SPONSOR.link}%0A%0A🚀 onfirepadel.com`;
             window.open(`https://wa.me/?text=${msg}`);
         }
 
