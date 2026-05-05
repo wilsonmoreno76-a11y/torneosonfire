@@ -18,12 +18,29 @@
         .podium-2 { background: linear-gradient(to top, #64748b, #94a3b8); height: 90px; width: 80px; }
         .podium-3 { background: linear-gradient(to top, #78350f, #b45309); height: 70px; width: 80px; }
         .btn-nav:disabled { opacity: 0.3; cursor: not-allowed; }
+        .sponsor-banner { background: linear-gradient(90deg, #1e293b 0%, #334155 100%); border: 1px dashed #f97316; }
     </style>
 </head>
 <body class="p-4 pb-10">
-    <header class="text-center mb-6">
+    <header class="text-center mb-4">
         <h1 class="text-3xl font-black italic uppercase italic tracking-tighter">ON FIRE <span class="text-orange-500">PADEL</span></h1>
-        <div class="flex flex-col items-center justify-center gap-1 mt-2">
+        
+        <div id="sponsor-space" class="mt-4 max-w-md mx-auto">
+            <a href="https://wa.me/573102142240" id="sponsor-link" target="_blank">
+                <div class="sponsor-banner p-2 rounded-xl flex items-center justify-between gap-3 overflow-hidden">
+                    <div class="flex items-center gap-2">
+                        <div class="bg-orange-500 w-8 h-8 rounded-lg flex items-center justify-center font-black text-[14px]">🌽</div>
+                        <div class="text-left">
+                            <p class="text-[9px] text-orange-500 font-black uppercase leading-none">Aliado Especial</p>
+                            <p id="sponsor-name" class="text-[11px] font-bold uppercase italic">Kukuruz Gourmet</p>
+                        </div>
+                    </div>
+                    <span class="text-[8px] bg-white/10 px-2 py-1 rounded-full font-bold uppercase tracking-tighter">¡Pide tu combo! 🌽</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="flex flex-col items-center justify-center gap-1 mt-4">
             <a href="https://www.instagram.com/onfirepadel" target="_blank" class="flex items-center gap-2 bg-black-600/20 px-4 py-1 rounded-full border border-white-500/30">
                 <i class="fab fa-instagram text-orange-500"></i>
                 <span class="text-[10px] font-black uppercase tracking-widest text-white-500">SÍGUENOS @onfirepadel</span>
@@ -103,6 +120,12 @@
         const CLOUD_URL = 'https://script.google.com/macros/s/AKfycbxWoZdkIXViCpP-K1_QEC9r61DyFXfAzuoCig9u7Wx7ulXaBxaury6a2WFOFU2ukmMSwg/exec';
         let state = { nombreTorneo: '', modo: 'parejas', jugadores: [], ronda: 1, pistasMax: 3, partidos: {}, activo: false };
 
+        const SPONSOR = {
+            nombre: "Kukuruz Gourmet",
+            link: "https://wa.me/573102142240",
+            mensajeWA: "Post-partido en Kukuruz Gourmet 🌽"
+        };
+
         function setModo(m) {
             state.modo = m;
             document.getElementById('btn-parejas').className = m === 'parejas' ? 'py-3 rounded-lg font-bold border-2 border-orange-500 bg-orange-500' : 'py-3 rounded-lg font-bold border-2 border-slate-700';
@@ -177,11 +200,9 @@
             playing.forEach((m, idx) => {
                 const key = `r${state.ronda}c${idx}`;
                 if(!state.partidos[key]) state.partidos[key] = {s1:0, s2:0};
-                
                 const n1 = m.t1.map(id => state.jugadores[id].nombre).join(" / ");
                 const n2 = m.t2.map(id => state.jugadores[id].nombre).join(" / ");
                 
-                // Lógica de visualización: si es 0 muestra placeholder, si es > 0 muestra el valor
                 const val1 = state.partidos[key].s1 === 0 ? '' : state.partidos[key].s1;
                 const val2 = state.partidos[key].s2 === 0 ? '' : state.partidos[key].s2;
 
@@ -230,7 +251,7 @@
                 let icon = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : "🎾";
                 msg += `${icon} *${j.nombre}*: ${j.pts} pts%0A`;
             });
-            msg += `%0A🎾 _Gestionado por @onfirepadel_%0A🚀 onfirepadel.com`;
+            msg += `%0A🎾 _${SPONSOR.mensajeWA}_%0A🚀 onfirepadel.com`;
             window.open(`https://wa.me/?text=${msg}`);
         }
 
@@ -269,6 +290,8 @@
         window.onload = () => {
             loadLocal();
             if (!state.activo) setModo('parejas');
+            document.getElementById('sponsor-name').innerText = SPONSOR.nombre;
+            document.getElementById('sponsor-link').href = SPONSOR.link;
         };
     </script>
 </body>
