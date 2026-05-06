@@ -18,65 +18,60 @@
         .podium-2 { background: linear-gradient(to top, #64748b, #94a3b8); height: 90px; width: 80px; }
         .podium-3 { background: linear-gradient(to top, #78350f, #b45309); height: 70px; width: 80px; }
         .btn-nav:disabled { opacity: 0.3; cursor: not-allowed; }
-        /* BANNER AJUSTADO: Fondo blanco y ancho completo */
-        .sponsor-banner { background: #ffffff; border: 2px solid #f97316; }
+        
+        /* Estilos del Banner Rotativo */
+        #sponsor-link { transition: all 0.5s ease-in-out; }
+        .sponsor-banner { background: white; color: #0f172a; border-radius: 1rem; box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3); min-height: 75px; }
+        .sponsor-logo { width: 48px; height: 48px; object-fit: contain; }
     </style>
 </head>
 <body class="p-4 pb-10">
     <header class="text-center mb-4">
-        <h1 class="text-3xl font-black italic uppercase tracking-tighter">ON FIRE <span class="text-orange-500">PADEL</span></h1>
+        <h1 class="text-3xl font-black italic uppercase tracking-tighter text-white">ON FIRE <span class="text-orange-500">PADEL</span></h1>
         
-        <!-- PATROCINIO ACTUALIZADO: KUKURUZ GOURMET (Ancho completo y blanco) -->
-        <div id="sponsor-space" class="mt-4 w-full max-w-2xl mx-auto">
-            <a href="https://wa.me/573193490940" id="sponsor-link" target="_blank">
-                <div class="sponsor-banner p-3 rounded-xl flex items-center justify-between gap-3 shadow-lg">
+        <div id="sponsor-space" class="mt-4 max-w-md mx-auto h-[85px]">
+            <a id="sponsor-link" href="#" target="_blank" class="block opacity-100 scale-100">
+                <div class="sponsor-banner p-3 flex items-center justify-between gap-3">
                     <div class="flex items-center gap-3">
-                        <div class="bg-orange-500 w-10 h-10 rounded-lg flex items-center justify-center text-xl shadow-inner">🌽</div>
+                        <div class="bg-white p-1 rounded-lg">
+                            <img id="img-logo" src="" alt="Logo" class="sponsor-logo">
+                        </div>
                         <div class="text-left">
-                            <p class="text-[10px] text-orange-600 font-black uppercase leading-none">Patrocinador Oficial</p>
-                            <p id="sponsor-name" class="text-[14px] text-slate-900 font-black uppercase italic">Kukuruz Gourmet</p>
+                            <p id="sponsor-tag" class="text-[9px] text-orange-600 font-black uppercase leading-none"></p>
+                            <p id="sponsor-name" class="text-[14px] font-black uppercase text-slate-900 tracking-tighter"></p>
                         </div>
                     </div>
-                    <div class="flex flex-col items-end">
-                        <span class="text-[11px] bg-orange-100 text-black px-3 py-1 rounded-full font-black uppercase tracking-tight">¡Pide aquí! 🔥</span>
-                    </div>
+                    <span id="sponsor-btn" class="text-[10px] bg-orange-500 text-white px-3 py-2 rounded-lg font-black uppercase italic shadow-md animate-pulse"></span>
                 </div>
             </a>
         </div>
 
         <div class="flex flex-col items-center justify-center gap-1 mt-6">
-            <a href="https://www.instagram.com/onfirepadel" target="_blank" class="flex items-center gap-2 bg-slate-800/50 px-4 py-1 rounded-full border border-slate-700">
+            <a href="https://www.instagram.com/onfirepadel" target="_blank" class="flex items-center gap-2 bg-slate-800/50 px-4 py-1 rounded-full border border-white/10">
                 <i class="fab fa-instagram text-orange-500"></i>
-                <span class="text-[10px] font-black uppercase tracking-widest text-white">SÍGUENOS @onfirepadel</span>
+                <span class="text-[10px] font-black uppercase tracking-widest text-white">@onfirepadel</span>
             </a>
-            <p id="display-torneo-name" class="text-[11px] text-slate-500 font-bold uppercase tracking-[0.2em] mt-2">AMERICANO</p>
+            <p id="display-torneo-name" class="text-[11px] text-slate-500 font-bold uppercase tracking-[0.2em] mt-2 italic">AMERICANO</p>
         </div>
     </header>
 
-    <!-- El resto de las secciones se mantienen igual según tu solicitud -->
     <section id="setup-section" class="max-w-xl mx-auto space-y-4">
         <div class="onfire-card p-6">
             <div class="mb-4">
                 <label class="block text-[10px] font-bold text-slate-400 mb-1 uppercase">Nombre del Torneo</label>
-                <input type="text" id="input-torneo-name" placeholder="EJ: TEACHERS BATTLE" class="onfire-input w-full p-3 text-lg font-black uppercase border-orange-500/50">
+                <input type="text" id="input-torneo-name" placeholder="EJ: COPA ON FIRE" class="onfire-input w-full p-3 text-lg font-black uppercase border-orange-500/50">
             </div>
             <div class="grid grid-cols-2 gap-4 mb-4">
-                <button id="btn-parejas" onclick="setModo('parejas')" class="py-3 rounded-lg font-bold border-2 border-orange-500 bg-orange-500">PAREJAS</button>
-                <button id="btn-individual" onclick="setModo('individual')" class="py-3 rounded-lg font-bold border-2 border-slate-700">INDIVIDUAL</button>
+                <button id="btn-parejas" onclick="setModo('parejas')" class="py-3 rounded-lg font-bold border-2 border-orange-500 bg-orange-500 text-white">PAREJAS</button>
+                <button id="btn-individual" onclick="setModo('individual')" class="py-3 rounded-lg font-bold border-2 border-slate-700 text-white">INDIVIDUAL</button>
             </div>
             <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label id="label-total" class="block text-[10px] font-bold text-slate-400 mb-1 uppercase">Total Jugadores/Parejas</label>
-                    <input type="number" id="num-total" placeholder="6" onchange="crearInputsNombres()" class="onfire-input w-full p-3 text-xl font-black">
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-400 mb-1 uppercase">Canchas Disponibles</label>
-                    <input type="number" id="pistas-limit" placeholder="3" class="onfire-input w-full p-3 text-xl font-black text-orange-500">
-                </div>
+                <div><label class="block text-[10px] font-bold text-slate-400 mb-1 uppercase">Total</label><input type="number" id="num-total" placeholder="6" oninput="crearInputsNombres()" class="onfire-input w-full p-3 text-xl font-black"></div>
+                <div><label class="block text-[10px] font-bold text-slate-400 mb-1 uppercase">Canchas</label><input type="number" id="pistas-limit" placeholder="3" class="onfire-input w-full p-3 text-xl font-black text-orange-500"></div>
             </div>
         </div>
         <div id="grid-nombres" class="grid grid-cols-2 gap-2"></div>
-        <button onclick="iniciarTorneo()" class="onfire-btn w-full py-5 text-xl shadow-lg">GENERAR TORNEO 🔥</button>
+        <button onclick="iniciarTorneo()" class="onfire-btn w-full py-5 text-xl shadow-lg shadow-orange-500/20 text-white">GENERAR TORNEO 🔥</button>
     </section>
 
     <section id="tournament-section" class="hidden max-w-2xl mx-auto space-y-6">
@@ -86,148 +81,133 @@
             <button onclick="cambiarRonda(1)" id="btn-next" class="bg-slate-800 p-4 rounded-xl font-bold btn-nav"><i class="fas fa-chevron-right"></i></button>
         </div>
         <div id="pistas-container" class="space-y-4"></div>
-        <div id="descanso-section" class="hidden">
-            <h3 class="text-[10px] font-black text-slate-500 uppercase mb-2 ml-2 tracking-widest">En espera</h3>
-            <div id="descanso-container" class="grid grid-cols-2 gap-2"></div>
-        </div>
         <div id="podio-visual" class="onfire-card p-6 text-center">
-            <h3 class="text-orange-500 font-black italic mb-6 uppercase tracking-widest">TOP PLAYERS</h3>
             <div class="flex items-end justify-center gap-2">
-                <div class="flex flex-col items-center">
-                    <span id="name-2" class="text-[10px] font-bold mb-2 w-20 truncate uppercase text-slate-400">---</span>
-                    <div class="podium-2 rounded-t-lg flex items-center justify-center text-2xl font-black">2</div>
-                </div>
-                <div class="flex flex-col items-center">
-                    <span id="name-1" class="text-[12px] font-black mb-2 text-orange-500 w-24 truncate uppercase">---</span>
-                    <div class="podium-1 rounded-t-lg flex items-center justify-center text-4xl font-black">1</div>
-                </div>
-                <div class="flex flex-col items-center">
-                    <span id="name-3" class="text-[10px] font-bold mb-2 w-20 truncate uppercase text-slate-400">---</span>
-                    <div class="podium-3 rounded-t-lg flex items-center justify-center text-2xl font-black">3</div>
-                </div>
+                <div class="flex flex-col items-center"><span id="name-2" class="text-[10px] font-bold mb-2 w-20 truncate uppercase text-white">---</span><div class="podium-2 rounded-t-lg flex items-center justify-center text-2xl font-black text-white">2</div></div>
+                <div class="flex flex-col items-center"><span id="name-1" class="text-[12px] font-black mb-2 text-orange-500 w-24 truncate uppercase">---</span><div class="podium-1 rounded-t-lg flex items-center justify-center text-4xl font-black text-white">1</div></div>
+                <div class="flex flex-col items-center"><span id="name-3" class="text-[10px] font-bold mb-2 w-20 truncate uppercase text-white">---</span><div class="podium-3 rounded-t-lg flex items-center justify-center text-2xl font-black text-white">3</div></div>
             </div>
         </div>
         <div class="onfire-card p-4">
-            <div id="lista-ranking" class="space-y-2 mb-6"></div>
+            <div id="lista-ranking" class="space-y-2 mb-6 text-sm font-bold text-white"></div>
             <div class="grid grid-cols-2 gap-2">
-                <button onclick="shareWhatsApp()" class="bg-green-600 p-3 rounded-lg font-bold text-[10px] uppercase"><i class="fab fa-whatsapp mr-2"></i> Compartir</button>
-                <button onclick="confirmarReinicio()" class="bg-slate-700 p-3 rounded-lg font-bold text-[10px] uppercase">Reiniciar</button>
+                <button onclick="shareWhatsApp()" class="bg-green-600 p-3 rounded-lg font-black text-[11px] uppercase text-white">WhatsApp</button>
+                <button onclick="confirmarReinicio()" class="bg-slate-700 p-3 rounded-lg font-black text-[11px] uppercase text-slate-400">Reiniciar</button>
             </div>
         </div>
     </section>
 
     <script>
-        const CLOUD_URL = 'https://script.google.com/macros/s/AKfycbxWoZdkIXViCpP-K1_QEC9r61DyFXfAzuoCig9u7Wx7ulXaBxaury6a2WFOFU2ukmMSwg/exec';
+        // --- CONFIGURACIÓN DE BANNER ROTATIVO ---
+        const MIS_SPONSORS = [
+            {
+                nombre: "Kukuruz Gourmet",
+                tag: "Aliado Oficial",
+                logo: "https://raw.githubusercontent.com/wmoreno7/onfirepadel/main/1777834752467.png",
+                link: "https://wa.me/573193490940",
+                btn: "PEDIR AQUÍ 🌽",
+                mensajeWA: "Post-partido en Kukuruz Gourmet 🌽"
+            },
+            {
+                nombre: "Tienda de Padel",
+                tag: "Amazon Influencer",
+                logo: "https://cdn-icons-png.flaticon.com/512/3163/3163636.png", 
+                link: "https://a.co/d/0acjAYVX",
+                btn: "VER OFERTAS 🔥",
+                mensajeWA: "Equípate en mi tienda de Amazon Padel 🚀"
+            }
+        ];
+
+        let indexSponsor = 0;
         let state = { nombreTorneo: '', modo: 'parejas', jugadores: [], ronda: 1, pistasMax: 3, partidos: {}, activo: false };
 
-        // CONFIGURACIÓN ACTUALIZADA DE KUKURUZ
-        const SPONSOR = {
-            nombre: "Kukuruz Gourmet",
-            link: "https://wa.me/573193490940",
-            mensajeWA: "Post-partido en Kukuruz Gourmet 🌽"
-        };
+        function rotarSponsor() {
+            const link = document.getElementById('sponsor-link');
+            link.style.opacity = '0';
+            link.style.transform = 'translateY(-5px)';
 
-        function setModo(m) {
-            state.modo = m;
-            document.getElementById('btn-parejas').className = m === 'parejas' ? 'py-3 rounded-lg font-bold border-2 border-orange-500 bg-orange-500' : 'py-3 rounded-lg font-bold border-2 border-slate-700';
-            document.getElementById('btn-individual').className = m === 'individual' ? 'py-3 rounded-lg font-bold border-2 border-orange-500 bg-orange-500' : 'py-3 rounded-lg font-bold border-2 border-slate-700';
-            crearInputsNombres();
+            setTimeout(() => {
+                const s = MIS_SPONSORS[indexSponsor];
+                document.getElementById('img-logo').src = s.logo;
+                document.getElementById('sponsor-name').innerText = s.nombre;
+                document.getElementById('sponsor-tag').innerText = s.tag;
+                document.getElementById('sponsor-btn').innerText = s.btn;
+                document.getElementById('sponsor-link').href = s.link;
+
+                link.style.opacity = '1';
+                link.style.transform = 'translateY(0)';
+                indexSponsor = (indexSponsor + 1) % MIS_SPONSORS.length;
+            }, 500);
+        }
+
+        // --- LÓGICA DE TORNEO (ESTRUCTURA ORIGINAL) ---
+        function setModo(m) { 
+            state.modo = m; 
+            document.getElementById('btn-parejas').className = m === 'parejas' ? 'py-3 rounded-lg font-bold border-2 border-orange-500 bg-orange-500 text-white' : 'py-3 rounded-lg font-bold border-2 border-slate-700 text-white';
+            document.getElementById('btn-individual').className = m === 'individual' ? 'py-3 rounded-lg font-bold border-2 border-orange-500 bg-orange-500 text-white' : 'py-3 rounded-lg font-bold border-2 border-slate-700 text-white';
+            crearInputsNombres(); 
         }
 
         function crearInputsNombres() {
             const n = parseInt(document.getElementById('num-total').value);
             const grid = document.getElementById('grid-nombres');
-            if(!n) return;
-            grid.innerHTML = ''; state.jugadores = [];
+            if(!n) return; grid.innerHTML = ''; state.jugadores = [];
             for(let i=0; i<n; i++) {
                 let def = state.modo === 'parejas' ? `PAREJA ${i+1}` : `JUGADOR ${i+1}`;
                 state.jugadores.push({ id: i, nombre: def, pts: 0 });
-                grid.innerHTML += `<input type="text" placeholder="${def}" onchange="updateNombre(${i}, this.value)" class="onfire-input p-3 text-[10px] font-bold uppercase">`;
+                grid.innerHTML += `<input type="text" placeholder="${def}" oninput="updateNombre(${i}, this.value)" class="onfire-input p-3 text-[10px] font-bold uppercase">`;
             }
         }
 
-        function updateNombre(id, val) {
-            state.jugadores[id].nombre = val.toUpperCase();
-            saveLocal();
-        }
+        function updateNombre(id, val) { state.jugadores[id].nombre = val.toUpperCase(); saveLocal(); }
 
         function iniciarTorneo() {
-            state.nombreTorneo = document.getElementById('input-torneo-name').value.toUpperCase() || 'AMERICANO';
+            state.nombreTorneo = document.getElementById('input-torneo-name').value.toUpperCase() || 'DIGITAL BOARD';
             state.pistasMax = parseInt(document.getElementById('pistas-limit').value) || 3;
             state.activo = true;
             document.getElementById('display-torneo-name').innerText = state.nombreTorneo;
             document.getElementById('setup-section').classList.add('hidden');
             document.getElementById('tournament-section').classList.remove('hidden');
-            renderRonda();
-            saveLocal();
+            renderRonda(); saveLocal();
         }
 
         function renderRonda() {
             const container = document.getElementById('pistas-container');
-            const descansoContainer = document.getElementById('descanso-container');
-            container.innerHTML = ''; descansoContainer.innerHTML = '';
+            container.innerHTML = '';
             document.getElementById('label-ronda').innerText = `RONDA ${state.ronda}`;
-            let ids = state.jugadores.map(j => j.id);
-            if(ids.length % 2 !== 0) ids.push(-1);
+            let ids = state.jugadores.map(j => j.id); if(ids.length % 2 !== 0) ids.push(-1);
             const maxRondas = ids.length - 1;
             document.getElementById('btn-next').disabled = state.ronda >= maxRondas;
             document.getElementById('btn-prev').disabled = state.ronda <= 1;
             let rotated = [ids[0], ...rotateArray(ids.slice(1), state.ronda - 1)];
-            let pairings = []; let waiting = [];
+            let pairings = [];
             for(let i=0; i<rotated.length/2; i++) {
                 let a = rotated[i], b = rotated[rotated.length-1-i];
                 if(a !== -1 && b !== -1) pairings.push([a, b]);
-                else { if(a!==-1) waiting.push(a); if(b!==-1) waiting.push(b); }
             }
             let matches = state.modo === 'individual' ? [] : pairings.map(p => ({t1:[p[0]], t2:[p[1]]}));
             if(state.modo === 'individual') {
                 for(let i=0; i<pairings.length; i+=2) {
                     if(i+1 < pairings.length) matches.push({t1:pairings[i], t2:pairings[i+1]});
-                    else waiting.push(...pairings[i]);
                 }
             }
             const playing = matches.slice(0, state.pistasMax);
-            const extraWait = matches.slice(state.pistasMax).flatMap(m => [...m.t1, ...m.t2]);
-            const finalWait = [...waiting, ...extraWait];
             playing.forEach((m, idx) => {
-                const key = `r${state.ronda}c${idx}`;
-                if(!state.partidos[key]) state.partidos[key] = {s1:0, s2:0};
-                const n1 = m.t1.map(id => state.jugadores[id].nombre).join(" / ");
-                const n2 = m.t2.map(id => state.jugadores[id].nombre).join(" / ");
+                const key = `r${state.ronda}c${idx}`; if(!state.partidos[key]) state.partidos[key] = {s1:0, s2:0};
                 const val1 = state.partidos[key].s1 === 0 ? '' : state.partidos[key].s1;
                 const val2 = state.partidos[key].s2 === 0 ? '' : state.partidos[key].s2;
-                container.innerHTML += `
-                    <div class="onfire-card p-4 border-l-4 border-orange-500 relative">
-                        <span class="pista-badge absolute -top-2 left-4">CANCHA ${idx+1}</span>
-                        <div class="flex items-center gap-2 mt-2">
-                            <div class="flex-1 text-right font-bold text-[10px] uppercase">${n1}</div>
-                            <div class="flex gap-1">
-                                <input type="number" placeholder="0" value="${val1}" oninput="saveScore('${key}',1,this.value,${JSON.stringify(m.t1)},${JSON.stringify(m.t2)})" class="onfire-input w-10 h-10 font-black">
-                                <input type="number" placeholder="0" value="${val2}" oninput="saveScore('${key}',2,this.value,${JSON.stringify(m.t1)},${JSON.stringify(m.t2)})" class="onfire-input w-10 h-10 font-black">
-                            </div>
-                            <div class="flex-1 text-left font-bold text-[10px] uppercase">${n2}</div>
-                        </div>
-                    </div>`;
+                container.innerHTML += `<div class="onfire-card p-4 border-l-4 border-orange-500 relative"><span class="pista-badge absolute -top-2 left-4 font-black">CANCHA ${idx+1}</span><div class="flex items-center gap-2 mt-2"><div class="flex-1 text-right font-black text-[10px] uppercase text-white">${m.t1.map(id=>state.jugadores[id].nombre).join("/")}</div><div class="flex gap-1"><input type="number" placeholder="0" value="${val1}" oninput="saveScore('${key}',1,this.value,${JSON.stringify(m.t1)},${JSON.stringify(m.t2)})" class="onfire-input w-10 h-10 font-black text-orange-500"><input type="number" placeholder="0" value="${val2}" oninput="saveScore('${key}',2,this.value,${JSON.stringify(m.t1)},${JSON.stringify(m.t2)})" class="onfire-input w-10 h-10 font-black text-orange-500"></div><div class="flex-1 text-left font-black text-[10px] uppercase text-white">${m.t2.map(id=>state.jugadores[id].nombre).join("/")}</div></div></div>`;
             });
-            document.getElementById('descanso-section').classList.toggle('hidden', finalWait.length === 0);
-            finalWait.forEach(id => { descansoContainer.innerHTML += `<div class="bg-slate-800 p-2 rounded text-center text-[9px] font-bold text-slate-400">${state.jugadores[id].nombre}</div>`; });
             updateRanking();
         }
 
-        function saveScore(k, t, v, i1, i2) { 
-            state.partidos[k][`s${t}`] = parseInt(v)||0; 
-            state.partidos[k].ids1 = i1; 
-            state.partidos[k].ids2 = i2; 
-            updateRanking(); 
-            sync();
-            saveLocal();
-        }
+        function saveScore(k, t, v, i1, i2) { state.partidos[k][`s${t}`] = parseInt(v)||0; state.partidos[k].ids1 = i1; state.partidos[k].ids2 = i2; updateRanking(); saveLocal(); }
 
         function updateRanking() {
             state.jugadores.forEach(j => j.pts = 0);
             Object.values(state.partidos).forEach(p => { if(p.ids1){ p.ids1.forEach(id => state.jugadores[id].pts += p.s1); p.ids2.forEach(id => state.jugadores[id].pts += p.s2); }});
             const sorted = [...state.jugadores].sort((a,b) => b.pts - a.pts);
-            document.getElementById('lista-ranking').innerHTML = sorted.map((j, i) => `<div class="flex justify-between p-2 rounded ${i%2===0?'bg-slate-800/30':''}"><span>${i+1}. ${j.nombre}</span><span class="font-black text-orange-500">${j.pts}</span></div>`).join("");
+            document.getElementById('lista-ranking').innerHTML = sorted.map((j, i) => `<div class="flex justify-between p-2 rounded ${i%2===0?'bg-slate-800/30':''}"><span>${i+1}. ${j.nombre}</span><span class="text-orange-500 font-black">${j.pts}</span></div>`).join("");
             if(sorted[0]) document.getElementById('name-1').innerText = sorted[0].nombre;
             if(sorted[1]) document.getElementById('name-2').innerText = sorted[1].nombre;
             if(sorted[2]) document.getElementById('name-3').innerText = sorted[2].nombre;
@@ -235,45 +215,30 @@
 
         function shareWhatsApp() {
             const sorted = [...state.jugadores].sort((a,b) => b.pts - a.pts);
-            let msg = `🔥 *${state.nombreTorneo || 'RANKING ON FIRE'}* 🔥%0A%0A`;
-            sorted.slice(0, 10).forEach((j, i) => {
-                let icon = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : "🎾";
-                msg += `${icon} *${j.nombre}*: ${j.pts} pts%0A`;
-            });
-            msg += `%0A🌽 _${SPONSOR.mensajeWA}_%0A👉 Pedidos: ${SPONSOR.link}%0A%0A🚀 onfirepadel.com`;
+            const sActual = MIS_SPONSORS[(indexSponsor === 0 ? MIS_SPONSORS.length - 1 : indexSponsor - 1)];
+            let msg = `🔥 *${state.nombreTorneo}* 🔥%0A%0A`;
+            sorted.slice(0, 10).forEach((j, i) => { msg += `${i+1}. *${j.nombre}*: ${j.pts} pts%0A`; });
+            msg += `%0A🎾 _${sActual.mensajeWA}_%0A🚀 onfirepadel.com`;
             window.open(`https://wa.me/?text=${msg}`);
         }
 
-        function confirmarReinicio() {
-            if (confirm("¿Seguro que deseas reiniciar?")) {
-                localStorage.removeItem('onfire_state');
-                location.reload();
-            }
-        }
-
+        function confirmarReinicio() { if(confirm("¿Reiniciar torneo?")) { localStorage.removeItem('onfire_state'); location.reload(); } }
         function saveLocal() { localStorage.setItem('onfire_state', JSON.stringify(state)); }
         function loadLocal() {
             const saved = localStorage.getItem('onfire_state');
-            if (saved) {
+            if(saved) {
                 const parsed = JSON.parse(saved);
-                if (parsed.activo && confirm("¿Recuperar torneo en curso?")) {
-                    state = parsed;
-                    document.getElementById('display-torneo-name').innerText = state.nombreTorneo;
-                    document.getElementById('setup-section').classList.add('hidden');
-                    document.getElementById('tournament-section').classList.remove('hidden');
-                    setModo(state.modo);
-                    renderRonda();
-                }
+                if(parsed.activo && confirm("¿Recuperar torneo?")) { state = parsed; iniciarTorneo(); }
             }
         }
         function rotateArray(arr, k) { k = k % arr.length; return arr.slice(k).concat(arr.slice(0, k)); }
-        function cambiarRonda(v) { state.ronda += v; renderRonda(); window.scrollTo(0,0); saveLocal(); }
-        function sync() { fetch(CLOUD_URL, { method: 'POST', body: JSON.stringify({idTorneo: 'onfire-club', ...state}), mode: 'no-cors' }); }
-        
+        function cambiarRonda(v) { state.ronda += v; renderRonda(); window.scrollTo(0,0); }
+
         window.onload = () => {
+            rotarSponsor();
+            setInterval(rotarSponsor, 6000); 
             loadLocal();
-            if (!state.activo) setModo('parejas');
         };
     </script>
 </body>
-</html>
+</html>                         
