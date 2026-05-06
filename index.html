@@ -28,6 +28,7 @@
     <header class="text-center mb-4">
         <h1 class="text-3xl font-black italic uppercase tracking-tighter text-white">ON FIRE <span class="text-orange-500">PADEL</span></h1>
         
+        <!-- BANNER ROTATIVO -->
         <div id="sponsor-space" class="mt-4 max-w-md mx-auto h-[85px]">
             <a id="sponsor-link" href="#" target="_blank" class="block opacity-100 scale-100">
                 <div class="sponsor-banner p-3 flex items-center justify-between gap-3">
@@ -54,6 +55,7 @@
         </div>
     </header>
 
+    <!-- SECCIÓN SETUP -->
     <section id="setup-section" class="max-w-xl mx-auto space-y-4">
         <div class="onfire-card p-6">
             <div class="mb-4">
@@ -73,6 +75,7 @@
         <button onclick="iniciarTorneo()" class="onfire-btn w-full py-5 text-xl shadow-lg shadow-orange-500/20 text-white">GENERAR TORNEO 🔥</button>
     </section>
 
+    <!-- SECCIÓN TORNEO -->
     <section id="tournament-section" class="hidden max-w-2xl mx-auto space-y-6">
         <div class="flex items-center justify-between gap-2">
             <button onclick="cambiarRonda(-1)" id="btn-prev" class="bg-slate-800 p-4 rounded-xl font-bold btn-nav"><i class="fas fa-chevron-left"></i></button>
@@ -102,18 +105,18 @@
             {
                 nombre: "Kukuruz Gourmet",
                 tag: "Patrocinador Oficial",
-                logo: "https://raw.githubusercontent.com/wmoreno7/onfirepadel/main/1777834752467.png",
-                link: "https://wa.me/573193490940", // Teléfono corregido
+                logo: "https://raw.githubusercontent.com/wilsonmoreno76-a11y/torneosonfire/principal/logok.png",
+                link: "https://wa.me/573193490940", 
                 btn: "PEDIR AQUÍ 🌽",
                 mensajeWA: "Post-partido en Kukuruz Gourmet 🌽"
             },
             {
                 nombre: "Tienda de Padel",
                 tag: "DESCUENTOS",
-                logo: "https://cdn-icons-png.flaticon.com/512/3163/3163636.png", // Icono de Pala/Bola Padel
-                link: "https://www.amazon.com/shop/onfirepadel/list/3GFU63HCITYBZ", // Link de tienda corregido
+                logo: "https://cdn-icons-png.flaticon.com/512/3163/3163636.png", 
+                link: "https://www.amazon.com/shop/onfirepadel/list/3GFU63HCITYBZ", 
                 btn: "VER OFERTAS 🔥",
-                mensajeWA: "Equípate para tus juegos 🚀"
+                mensajeWA: "Todo para tus juegos de Padel 🚀"
             }
         ];
 
@@ -122,6 +125,7 @@
 
         function rotarSponsor() {
             const link = document.getElementById('sponsor-link');
+            if(!link) return;
             link.style.opacity = '0';
             link.style.transform = 'translateY(-5px)';
 
@@ -139,7 +143,6 @@
             }, 500);
         }
 
-        // --- LÓGICA DE TORNEO ---
         function setModo(m) { 
             state.modo = m; 
             document.getElementById('btn-parejas').className = m === 'parejas' ? 'py-3 rounded-lg font-bold border-2 border-orange-500 bg-orange-500 text-white' : 'py-3 rounded-lg font-bold border-2 border-slate-700 text-white';
