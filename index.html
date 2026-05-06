@@ -213,15 +213,16 @@
 
         function saveScore(k, t, v, i1, i2) { state.partidos[k][`s${t}`] = parseInt(v)||0; state.partidos[k].ids1 = i1; state.partidos[k].ids2 = i2; updateRanking(); saveLocal(); }
 
-        function updateRanking() {
+       function updateRanking() {
             state.jugadores.forEach(j => j.pts = 0);
             Object.values(state.partidos).forEach(p => { if(p.ids1){ p.ids1.forEach(id => state.jugadores[id].pts += p.s1); p.ids2.forEach(id => state.jugadores[id].pts += p.s2); }});
             const sorted = [...state.jugadores].sort((a,b) => b.pts - a.pts);
-            document.getElementById('lista-ranking').innerHTML = sorted.map((j, i) => `<div class="flex justify-between p-2 rounded ${i%2===0?'bg-slate-800/30':''}"><span>${i+1}. ${j.nombre}</span><span class="text-orange-500 font-black">${j.pts}</span></div>`).join("");
+            document.getElementById('lista-ranking').innerHTML = sorted.map((j, i) => `<div class="flex justify-between p-2 rounded ${i%2===0?'bg-slate-800/30':''}"><span>${i+1}. ${j.nombre}</span><span class="font-black text-orange-500">${j.pts}</span></div>`).join("");
             if(sorted[0]) document.getElementById('name-1').innerText = sorted[0].nombre;
             if(sorted[1]) document.getElementById('name-2').innerText = sorted[1].nombre;
             if(sorted[2]) document.getElementById('name-3').innerText = sorted[2].nombre;
         }
+
 
          function shareWhatsApp() {
             const sorted = [...state.jugadores].sort((a,b) => b.pts - a.pts);
