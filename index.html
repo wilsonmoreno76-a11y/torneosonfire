@@ -223,12 +223,14 @@
             if(sorted[2]) document.getElementById('name-3').innerText = sorted[2].nombre;
         }
 
-        function shareWhatsApp() {
+         function shareWhatsApp() {
             const sorted = [...state.jugadores].sort((a,b) => b.pts - a.pts);
-            const sActual = MIS_SPONSORS[(indexSponsor === 0 ? MIS_SPONSORS.length - 1 : indexSponsor - 1)];
-            let msg = `🔥 *${state.nombreTorneo}* 🔥%0A%0A`;
-            sorted.slice(0, 10).forEach((j, i) => { msg += `${i+1}. *${j.nombre}*: ${j.pts} pts%0A`; });
-            msg += `%0A🎾 _${sActual.mensajeWA}_%0A🚀 onfirepadel.com`;
+            let msg = `🔥 *${state.nombreTorneo || 'RANKING ON FIRE'}* 🔥%0A%0A`;
+            sorted.slice(0, 10).forEach((j, i) => {
+                let icon = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : "🎾";
+                msg += `${icon} *${j.nombre}*: ${j.pts} pts%0A`;
+            });
+            msg += `%0A🌽 _${SPONSOR.mensajeWA}_%0A👉 Pedidos: ${SPONSOR.link}%0A%0A🚀 onfirepadel.com`;
             window.open(`https://wa.me/?text=${msg}`);
         }
 
