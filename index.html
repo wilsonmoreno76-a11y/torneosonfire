@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-T2DYDKZDVV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-T2DYDKZDVV');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>On Fire Padel - Elite System</title>
@@ -26,9 +35,8 @@
     <header class="text-center mb-4">
         <h1 class="text-3xl font-black italic uppercase tracking-tighter text-white">ON FIRE <span class="text-orange-500">PADEL</span></h1>
         
-        <!-- BANNER ROTATIVO -->
         <div id="sponsor-space" class="mt-4 max-w-md mx-auto h-[85px]">
-            <a id="sponsor-link" href="#" target="_blank" class="block">
+            <a id="sponsor-link" href="#" target="_blank" onclick="trackSponsorClick()" class="block">
                 <div class="sponsor-banner p-3 flex items-center justify-between gap-3">
                     <div class="flex items-center gap-3">
                         <div class="bg-white p-1 rounded-lg">
@@ -132,6 +140,11 @@
             indexSponsor = (indexSponsor + 1) % MIS_SPONSORS.length;
         }
 
+        function trackSponsorClick() {
+            const currentSponsor = MIS_SPONSORS[(indexSponsor === 0) ? MIS_SPONSORS.length - 1 : indexSponsor - 1];
+            gtag('event', 'clic_patrocinador', { 'nombre_sponsor': currentSponsor.nombre });
+        }
+
         function setModo(m) { 
             state.modo = m; 
             document.getElementById('btn-parejas').className = m === 'parejas' ? 'py-3 rounded-lg font-bold border-2 border-orange-500 bg-orange-500 text-white' : 'py-3 rounded-lg font-bold border-2 border-slate-700 text-white';
@@ -216,10 +229,9 @@
 
         function shareWhatsApp() {
             const sorted = [...state.jugadores].sort((a,b) => b.pts - a.pts);
-            // Tomamos el sponsor que esté rotando en este momento
             const currentIdx = (indexSponsor === 0) ? MIS_SPONSORS.length - 1 : indexSponsor - 1;
             const s = MIS_SPONSORS[currentIdx];
-            
+            gtag('event', 'compartir_ranking', { 'metodo': 'whatsapp', 'torneo': state.nombreTorneo });
             let msg = `🔥 *${state.nombreTorneo || 'RANKING ON FIRE'}* 🔥%0A%0A`;
             sorted.slice(0, 10).forEach((j, i) => {
                 let icon = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : "🎾";
