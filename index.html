@@ -19,7 +19,6 @@
         .podium-3 { background: linear-gradient(to top, #78350f, #b45309); height: 70px; width: 80px; }
         .btn-nav:disabled { opacity: 0.3; cursor: not-allowed; }
         
-        /* Estilos del Banner Rotativo */
         #sponsor-link { transition: all 0.5s ease-in-out; }
         .sponsor-banner { background: white; color: #0f172a; border-radius: 1rem; box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3); min-height: 75px; }
         .sponsor-logo { width: 48px; height: 48px; object-fit: contain; }
@@ -102,19 +101,19 @@
         const MIS_SPONSORS = [
             {
                 nombre: "Kukuruz Gourmet",
-                tag: "Aliado Oficial",
+                tag: "Patrocinador Oficial",
                 logo: "https://raw.githubusercontent.com/wmoreno7/onfirepadel/main/1777834752467.png",
-                link: "https://wa.me/573193490940",
+                link: "https://wa.me/573193490940", // Teléfono corregido
                 btn: "PEDIR AQUÍ 🌽",
                 mensajeWA: "Post-partido en Kukuruz Gourmet 🌽"
             },
             {
                 nombre: "Tienda de Padel",
-                tag: "Amazon Influencer",
-                logo: "https://cdn-icons-png.flaticon.com/512/3163/3163636.png", 
-                link: "https://a.co/d/0acjAYVX",
+                tag: "DESCUENTOS",
+                logo: "https://cdn-icons-png.flaticon.com/512/3163/3163636.png", // Icono de Pala/Bola Padel
+                link: "https://www.amazon.com/shop/onfirepadel/list/3GFU63HCITYBZ", // Link de tienda corregido
                 btn: "VER OFERTAS 🔥",
-                mensajeWA: "Equípate en mi tienda de Amazon Padel 🚀"
+                mensajeWA: "Equípate para tus juegos 🚀"
             }
         ];
 
@@ -140,7 +139,7 @@
             }, 500);
         }
 
-        // --- LÓGICA DE TORNEO (ESTRUCTURA ORIGINAL) ---
+        // --- LÓGICA DE TORNEO ---
         function setModo(m) { 
             state.modo = m; 
             document.getElementById('btn-parejas').className = m === 'parejas' ? 'py-3 rounded-lg font-bold border-2 border-orange-500 bg-orange-500 text-white' : 'py-3 rounded-lg font-bold border-2 border-slate-700 text-white';
@@ -241,4 +240,4 @@
         };
     </script>
 </body>
-</html>                         
+</html>
