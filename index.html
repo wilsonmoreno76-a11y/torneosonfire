@@ -18,8 +18,6 @@
         .podium-2 { background: linear-gradient(to top, #64748b, #94a3b8); height: 90px; width: 80px; }
         .podium-3 { background: linear-gradient(to top, #78350f, #b45309); height: 70px; width: 80px; }
         .btn-nav:disabled { opacity: 0.3; cursor: not-allowed; }
-        
-        #sponsor-link { transition: all 0.5s ease-in-out; }
         .sponsor-banner { background: white; color: #0f172a; border-radius: 1rem; box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3); min-height: 75px; }
         .sponsor-logo { width: 48px; height: 48px; object-fit: contain; }
     </style>
@@ -30,7 +28,7 @@
         
         <!-- BANNER ROTATIVO -->
         <div id="sponsor-space" class="mt-4 max-w-md mx-auto h-[85px]">
-            <a id="sponsor-link" href="#" target="_blank" class="block opacity-100 scale-100">
+            <a id="sponsor-link" href="#" target="_blank" class="block">
                 <div class="sponsor-banner p-3 flex items-center justify-between gap-3">
                     <div class="flex items-center gap-3">
                         <div class="bg-white p-1 rounded-lg">
@@ -41,7 +39,7 @@
                             <p id="sponsor-name" class="text-[14px] font-black uppercase text-slate-900 tracking-tighter"></p>
                         </div>
                     </div>
-                    <span id="sponsor-btn" class="text-[10px] bg-orange-500 text-white px-3 py-2 rounded-lg font-black uppercase italic shadow-md animate-pulse"></span>
+                    <span id="sponsor-btn" class="text-[10px] bg-orange-500 text-white px-3 py-2 rounded-lg font-black uppercase italic animate-pulse"></span>
                 </div>
             </a>
         </div>
@@ -55,7 +53,6 @@
         </div>
     </header>
 
-    <!-- SECCIÓN SETUP -->
     <section id="setup-section" class="max-w-xl mx-auto space-y-4">
         <div class="onfire-card p-6">
             <div class="mb-4">
@@ -75,7 +72,6 @@
         <button onclick="iniciarTorneo()" class="onfire-btn w-full py-5 text-xl shadow-lg shadow-orange-500/20 text-white">GENERAR TORNEO 🔥</button>
     </section>
 
-    <!-- SECCIÓN TORNEO -->
     <section id="tournament-section" class="hidden max-w-2xl mx-auto space-y-6">
         <div class="flex items-center justify-between gap-2">
             <button onclick="cambiarRonda(-1)" id="btn-prev" class="bg-slate-800 p-4 rounded-xl font-bold btn-nav"><i class="fas fa-chevron-left"></i></button>
@@ -83,6 +79,9 @@
             <button onclick="cambiarRonda(1)" id="btn-next" class="bg-slate-800 p-4 rounded-xl font-bold btn-nav"><i class="fas fa-chevron-right"></i></button>
         </div>
         <div id="pistas-container" class="space-y-4"></div>
+        <!-- Panel de descanso corregido -->
+        <div id="bye-container" class="hidden bg-slate-800/50 p-3 rounded-xl border border-dashed border-slate-600 text-center text-xs font-bold text-slate-400 italic"></div>
+        
         <div id="podio-visual" class="onfire-card p-6 text-center">
             <div class="flex items-end justify-center gap-2">
                 <div class="flex flex-col items-center"><span id="name-2" class="text-[10px] font-bold mb-2 w-20 truncate uppercase text-white">---</span><div class="podium-2 rounded-t-lg flex items-center justify-center text-2xl font-black text-white">2</div></div>
@@ -100,23 +99,22 @@
     </section>
 
     <script>
-        // --- CONFIGURACIÓN DE BANNER ROTATIVO ---
         const MIS_SPONSORS = [
             {
                 nombre: "Kukuruz Gourmet",
-                tag: "Patrocinador Oficial",
-                logo: "https://raw.githubusercontent.com/wilsonmoreno76-a11y/torneosonfire/principal/logok.png",
+                tag: "Aliado Oficial",
+                logo: "https://github.com/wilsonmoreno76-a11y/torneosonfire/blob/main/logok.png?raw=true",
                 link: "https://wa.me/573193490940", 
                 btn: "PEDIR AQUÍ 🌽",
                 mensajeWA: "Post-partido en Kukuruz Gourmet 🌽"
             },
             {
-                nombre: "Tienda de Padel",
+                nombre: "TIENDA DE PADEL",
                 tag: "DESCUENTOS",
                 logo: "https://cdn-icons-png.flaticon.com/512/3163/3163636.png", 
                 link: "https://www.amazon.com/shop/onfirepadel/list/3GFU63HCITYBZ", 
                 btn: "VER OFERTAS 🔥",
-                mensajeWA: "Todo para tus juegos de Padel 🚀"
+                mensajeWA: "Equípate en mi tienda de Amazon Padel 🚀"
             }
         ];
 
@@ -126,21 +124,13 @@
         function rotarSponsor() {
             const link = document.getElementById('sponsor-link');
             if(!link) return;
-            link.style.opacity = '0';
-            link.style.transform = 'translateY(-5px)';
-
-            setTimeout(() => {
-                const s = MIS_SPONSORS[indexSponsor];
-                document.getElementById('img-logo').src = s.logo;
-                document.getElementById('sponsor-name').innerText = s.nombre;
-                document.getElementById('sponsor-tag').innerText = s.tag;
-                document.getElementById('sponsor-btn').innerText = s.btn;
-                document.getElementById('sponsor-link').href = s.link;
-
-                link.style.opacity = '1';
-                link.style.transform = 'translateY(0)';
-                indexSponsor = (indexSponsor + 1) % MIS_SPONSORS.length;
-            }, 500);
+            const s = MIS_SPONSORS[indexSponsor];
+            document.getElementById('img-logo').src = s.logo;
+            document.getElementById('sponsor-name').innerText = s.nombre;
+            document.getElementById('sponsor-tag').innerText = s.tag;
+            document.getElementById('sponsor-btn').innerText = s.btn;
+            document.getElementById('sponsor-link').href = s.link;
+            indexSponsor = (indexSponsor + 1) % MIS_SPONSORS.length;
         }
 
         function setModo(m) { 
@@ -175,30 +165,48 @@
 
         function renderRonda() {
             const container = document.getElementById('pistas-container');
-            container.innerHTML = '';
+            const byeContainer = document.getElementById('bye-container');
+            container.innerHTML = ''; byeContainer.innerHTML = ''; byeContainer.classList.add('hidden');
             document.getElementById('label-ronda').innerText = `RONDA ${state.ronda}`;
-            let ids = state.jugadores.map(j => j.id); if(ids.length % 2 !== 0) ids.push(-1);
+            
+            let ids = state.jugadores.map(j => j.id); 
+            if(ids.length % 2 !== 0) ids.push(-1); 
+            
             const maxRondas = ids.length - 1;
             document.getElementById('btn-next').disabled = state.ronda >= maxRondas;
             document.getElementById('btn-prev').disabled = state.ronda <= 1;
+
             let rotated = [ids[0], ...rotateArray(ids.slice(1), state.ronda - 1)];
             let pairings = [];
+            let resting = [];
+
             for(let i=0; i<rotated.length/2; i++) {
                 let a = rotated[i], b = rotated[rotated.length-1-i];
                 if(a !== -1 && b !== -1) pairings.push([a, b]);
+                else if (a === -1) resting.push(b);
+                else if (b === -1) resting.push(a);
             }
+
             let matches = state.modo === 'individual' ? [] : pairings.map(p => ({t1:[p[0]], t2:[p[1]]}));
             if(state.modo === 'individual') {
                 for(let i=0; i<pairings.length; i+=2) {
                     if(i+1 < pairings.length) matches.push({t1:pairings[i], t2:pairings[i+1]});
+                    else resting.push(...pairings[i]);
                 }
             }
+
             const playing = matches.slice(0, state.pistasMax);
+            const extraResting = matches.slice(state.pistasMax).flatMap(m => [...m.t1, ...m.t2]);
+            const allResting = [...resting, ...extraResting];
+
+            if(allResting.length > 0) {
+                byeContainer.classList.remove('hidden');
+                byeContainer.innerHTML = `DESCANSA: ${allResting.map(id => state.jugadores[id].nombre).join(", ")}`;
+            }
+
             playing.forEach((m, idx) => {
                 const key = `r${state.ronda}c${idx}`; if(!state.partidos[key]) state.partidos[key] = {s1:0, s2:0};
-                const val1 = state.partidos[key].s1 === 0 ? '' : state.partidos[key].s1;
-                const val2 = state.partidos[key].s2 === 0 ? '' : state.partidos[key].s2;
-                container.innerHTML += `<div class="onfire-card p-4 border-l-4 border-orange-500 relative"><span class="pista-badge absolute -top-2 left-4 font-black">CANCHA ${idx+1}</span><div class="flex items-center gap-2 mt-2"><div class="flex-1 text-right font-black text-[10px] uppercase text-white">${m.t1.map(id=>state.jugadores[id].nombre).join("/")}</div><div class="flex gap-1"><input type="number" placeholder="0" value="${val1}" oninput="saveScore('${key}',1,this.value,${JSON.stringify(m.t1)},${JSON.stringify(m.t2)})" class="onfire-input w-10 h-10 font-black text-orange-500"><input type="number" placeholder="0" value="${val2}" oninput="saveScore('${key}',2,this.value,${JSON.stringify(m.t1)},${JSON.stringify(m.t2)})" class="onfire-input w-10 h-10 font-black text-orange-500"></div><div class="flex-1 text-left font-black text-[10px] uppercase text-white">${m.t2.map(id=>state.jugadores[id].nombre).join("/")}</div></div></div>`;
+                container.innerHTML += `<div class="onfire-card p-4 border-l-4 border-orange-500 relative"><span class="pista-badge absolute -top-2 left-4 font-black">CANCHA ${idx+1}</span><div class="flex items-center gap-2 mt-2"><div class="flex-1 text-right font-black text-[10px] uppercase text-white">${m.t1.map(id=>state.jugadores[id].nombre).join("/")}</div><div class="flex gap-1"><input type="number" placeholder="0" value="${state.partidos[key].s1 || ''}" oninput="saveScore('${key}',1,this.value,${JSON.stringify(m.t1)},${JSON.stringify(m.t2)})" class="onfire-input w-10 h-10 font-black text-orange-500"><input type="number" placeholder="0" value="${state.partidos[key].s2 || ''}" oninput="saveScore('${key}',2,this.value,${JSON.stringify(m.t1)},${JSON.stringify(m.t2)})" class="onfire-input w-10 h-10 font-black text-orange-500"></div><div class="flex-1 text-left font-black text-[10px] uppercase text-white">${m.t2.map(id=>state.jugadores[id].nombre).join("/")}</div></div></div>`;
             });
             updateRanking();
         }
