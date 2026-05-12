@@ -1,4 +1,4 @@
-   <!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="es">
 <head>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-T2DYDKZDVV"></script>
@@ -11,7 +11,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>On Fire Padel - Elite System V1.2.4</title>
+    <title>On Fire Padel - Elite System V1.2.5</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -112,7 +112,6 @@
         ];
 
         let indexSponsor = 0;
-        // Agregado historyMapping para guardar las posiciones por ronda
         let state = { nombreTorneo: '', modo: 'parejas', jugadores: [], ronda: 1, pistasMax: 3, partidos: {}, activo: false, pozoMapping: [], historyMapping: {} };
 
         function rotarSponsor() {
@@ -185,7 +184,6 @@
                 document.getElementById('btn-next').disabled = false;
                 document.getElementById('btn-prev').disabled = state.ronda <= 1;
                 
-                // Usamos el mapeo específico de esta ronda
                 let currentRoundMap = state.historyMapping[state.ronda] || state.pozoMapping;
                 
                 for(let i=0; i < state.pistasMax * 2; i += 2) {
@@ -235,12 +233,12 @@
 
         function cambiarRonda(v) {
             if(v > 0 && state.modo === 'pozo') {
-                // Solo procesamos el movimiento si no existe ya un mapeo para la siguiente ronda
                 if (!state.historyMapping[state.ronda + 1]) {
                     procesarSubeBaja();
                 }
             }
             state.ronda += v; 
+            saveLocal();
             renderRonda(); 
             window.scrollTo(0,0);
         }
@@ -252,17 +250,19 @@
             
             for(let i=0; i < state.pistasMax; i++) {
                 const p = state.partidos[`r${state.ronda}c${i}`];
-                // Si no hay puntos, el primero de la lista se considera ganador por defecto para no romper el flujo
+                let team1Id = currentMapping[i*2];
+                let team2Id = currentMapping[i*2+1];
+
                 if(!p || p.s1 >= p.s2) {
-                    winners.push(currentMapping[i*2]);
-                    losers.push(currentMapping[i*2+1]);
+                    winners.push(team1Id);
+                    losers.push(team2Id);
                 } else {
-                    winners.push(currentMapping[i*2+1]);
-                    losers.push(currentMapping[i*2]);
+                    winners.push(team2Id);
+                    losers.push(team1Id);
                 }
             }
 
-            let nextMap = new Array(currentMapping.length);
+            let nextMap = [...currentMapping];
             nextMap[0] = winners[0]; 
             for(let i=1; i < state.pistasMax; i++) {
                 nextMap[i*2 - 1] = winners[i]; 
@@ -270,13 +270,8 @@
             }
             nextMap[state.pistasMax * 2 - 1] = losers[state.pistasMax - 1];
             
-            // Mantener a los que están en espera en su sitio
-            for(let i = state.pistasMax * 2; i < currentMapping.length; i++) {
-                nextMap[i] = currentMapping[i];
-            }
-            
             state.historyMapping[state.ronda + 1] = nextMap;
-            state.pozoMapping = nextMap; // Para compatibilidad
+            state.pozoMapping = nextMap;
         }
 
         function updateRanking() {
@@ -319,7 +314,6 @@
                 const parsed = JSON.parse(saved);
                 if(parsed.activo && confirm("¿Recuperar torneo en curso?")) { 
                     state = parsed; 
-                    // Si es una versión vieja sin historyMapping, lo inicializamos
                     if(!state.historyMapping) {
                         state.historyMapping = {};
                         state.historyMapping[state.ronda] = [...state.pozoMapping];
