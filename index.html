@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+   <!DOCTYPE html>
 <html lang="es">
 <head>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-T2DYDKZDVV"></script>
@@ -11,7 +11,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>On Fire Padel - Elite System V1.2.2</title>
+    <title>On Fire Padel - Elite System V1.2.3</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -153,15 +153,20 @@
 
         function updateNombre(id, val) { state.jugadores[id].nombre = val.toUpperCase(); saveLocal(); }
 
-        function iniciarTorneo() {
-            state.nombreTorneo = document.getElementById('input-torneo-name').value.toUpperCase() || 'DIGITAL BOARD';
-            state.pistasMax = parseInt(document.getElementById('pistas-limit').value) || 3;
-            state.activo = true;
-            if(state.modo === 'pozo') state.pozoMapping = state.jugadores.map(j => j.id);
+        // CORRECCIÓN AQUÍ: Agregado parámetro 'isRecovery' para no borrar los datos al cargar
+        function iniciarTorneo(isRecovery = false) {
+            if(!isRecovery) {
+                state.nombreTorneo = document.getElementById('input-torneo-name').value.toUpperCase() || 'DIGITAL BOARD';
+                state.pistasMax = parseInt(document.getElementById('pistas-limit').value) || 3;
+                state.activo = true;
+                if(state.modo === 'pozo') state.pozoMapping = state.jugadores.map(j => j.id);
+            }
+            
             document.getElementById('display-torneo-name').innerText = state.nombreTorneo;
             document.getElementById('setup-section').classList.add('hidden');
             document.getElementById('tournament-section').classList.remove('hidden');
-            renderRonda(); saveLocal();
+            renderRonda(); 
+            if(!isRecovery) saveLocal();
         }
 
         function renderRonda() {
@@ -232,7 +237,6 @@
             let winners = [];
             let losers = [];
             
-            // 1. Identificar quién ganó y perdió en cada pista
             for(let i=0; i < state.pistasMax; i++) {
                 const p = state.partidos[`r${state.ronda}c${i}`];
                 if(!p) {
@@ -248,30 +252,15 @@
             }
 
             let nextMap = new Array(currentMapping.length);
-            
-            // 2. Lógica SUBE Y BAJA exacta:
-            // PISTA 1: Ganador se queda (Pos 0), Perdedor BAJA a Pista 2
             nextMap[0] = winners[0]; 
-            
-            // PISTAS INTERMEDIAS Y FINAL
             for(let i=1; i < state.pistasMax; i++) {
-                // El ganador de esta pista SUBE a la pista anterior
-                // Si viene de Pista 2, sube a la 1 (Pos 1) para enfrentar al Rey
-                // Si viene de Pista 3, sube a la 2 (Pos 3) para enfrentar al perdedor de la 1
                 nextMap[i*2 - 1] = winners[i]; 
-                
-                // El perdedor de la pista anterior BAJA a esta pista
                 nextMap[i*2] = losers[i-1];
             }
-            
-            // PISTA FINAL: El perdedor de la última pista se queda en la última posición
             nextMap[state.pistasMax * 2 - 1] = losers[state.pistasMax - 1];
-
-            // Rellenar restos (si hay gente esperando en el pozo)
             for(let i = state.pistasMax * 2; i < currentMapping.length; i++) {
                 nextMap[i] = currentMapping[i];
             }
-
             state.pozoMapping = nextMap;
         }
 
@@ -308,11 +297,16 @@
 
         function confirmarReinicio() { if(confirm("¿Reiniciar torneo?")) { localStorage.removeItem('onfire_state'); location.reload(); } }
         function saveLocal() { localStorage.setItem('onfire_state', JSON.stringify(state)); }
+        
+        // CORRECCIÓN AQUÍ: Se asegura de pasar 'true' a iniciarTorneo
         function loadLocal() {
             const saved = localStorage.getItem('onfire_state');
             if(saved) {
                 const parsed = JSON.parse(saved);
-                if(parsed.activo && confirm("¿Recuperar torneo?")) { state = parsed; iniciarTorneo(); }
+                if(parsed.activo && confirm("¿Recuperar torneo en curso?")) { 
+                    state = parsed; 
+                    iniciarTorneo(true); 
+                }
             }
         }
         function rotateArray(arr, k) { k = k % arr.length; return arr.slice(k).concat(arr.slice(0, k)); }
