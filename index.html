@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-T2DYDKZDVV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-T2DYDKZDVV');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>On Fire Padel - Elite System V1.2.0</title>
@@ -18,7 +26,6 @@
         .podium-2 { background: linear-gradient(to top, #64748b, #94a3b8); height: 90px; width: 80px; }
         .podium-3 { background: linear-gradient(to top, #78350f, #b45309); height: 70px; width: 80px; }
         .btn-nav:disabled { opacity: 0.3; cursor: not-allowed; }
-        #sponsor-link { transition: all 0.5s ease-in-out; }
         .sponsor-banner { background: white; color: #0f172a; border-radius: 1rem; box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3); min-height: 75px; }
         .sponsor-logo { width: 48px; height: 48px; object-fit: contain; }
     </style>
@@ -28,7 +35,7 @@
         <h1 class="text-3xl font-black italic uppercase tracking-tighter text-white">ON FIRE <span class="text-orange-500">PADEL</span></h1>
         
         <div id="sponsor-space" class="mt-4 max-w-md mx-auto h-[85px]">
-            <a id="sponsor-link" href="#" target="_blank" class="block opacity-100 scale-100">
+            <a id="sponsor-link" href="#" target="_blank" onclick="trackSponsorClick()" class="block">
                 <div class="sponsor-banner p-3 flex items-center justify-between gap-3">
                     <div class="flex items-center gap-3">
                         <div class="bg-white p-1 rounded-lg">
@@ -39,7 +46,7 @@
                             <p id="sponsor-name" class="text-[14px] font-black uppercase text-slate-900 tracking-tighter"></p>
                         </div>
                     </div>
-                    <span id="sponsor-btn" class="text-[10px] bg-orange-500 text-white px-3 py-2 rounded-lg font-black uppercase italic shadow-md animate-pulse"></span>
+                    <span id="sponsor-btn" class="text-[10px] bg-orange-500 text-white px-3 py-2 rounded-lg font-black uppercase italic animate-pulse"></span>
                 </div>
             </a>
         </div>
@@ -60,7 +67,7 @@
                 <input type="text" id="input-torneo-name" placeholder="EJ: COPA ON FIRE" class="onfire-input w-full p-3 text-lg font-black uppercase border-orange-500/50">
             </div>
             <div class="grid grid-cols-3 gap-2 mb-4">
-                <button id="btn-parejas" onclick="setModo('parejas')" class="py-3 rounded-lg font-bold text-[10px] border-2 border-orange-500 bg-orange-500 text-white">PAREJAS</button>
+                <button id="btn-parejas" onclick="setModo('parejas')" class="py-3 rounded-lg font-bold text-[10px] border-2 border-orange-500 bg-orange-500 text-white uppercase">Parejas</button>
                 <button id="btn-individual" onclick="setModo('individual')" class="py-3 rounded-lg font-bold text-[10px] border-2 border-slate-700 text-white uppercase">Individual</button>
                 <button id="btn-pozo" onclick="setModo('pozo')" class="py-3 rounded-lg font-bold text-[10px] border-2 border-slate-700 text-white uppercase">Sube/Baja</button>
             </div>
@@ -80,6 +87,7 @@
             <button onclick="cambiarRonda(1)" id="btn-next" class="bg-slate-800 p-4 rounded-xl font-bold btn-nav"><i class="fas fa-chevron-right"></i></button>
         </div>
         <div id="pistas-container" class="space-y-4"></div>
+        <div id="bye-container" class="hidden bg-slate-800/50 p-3 rounded-xl border border-dashed border-slate-600 text-center text-xs font-bold text-slate-400 italic"></div>
         
         <div id="podio-visual" class="onfire-card p-6 text-center">
             <div class="flex items-end justify-center gap-2">
@@ -88,7 +96,6 @@
                 <div class="flex flex-col items-center"><span id="name-3" class="text-[10px] font-bold mb-2 w-20 truncate uppercase text-white">---</span><div class="podium-3 rounded-t-lg flex items-center justify-center text-2xl font-black text-white">3</div></div>
             </div>
         </div>
-
         <div class="onfire-card p-4">
             <div id="lista-ranking" class="space-y-2 mb-6 text-sm font-bold text-white"></div>
             <div class="grid grid-cols-2 gap-2">
@@ -100,8 +107,8 @@
 
     <script>
         const MIS_SPONSORS = [
-            { nombre: "Kukuruz Gourmet", tag: "Aliado Oficial", logo: "https://raw.githubusercontent.com/wilsonmoreno76-a11y/torneosonfire/principal/logok.png", link: "https://wa.me/573193490940", btn: "PEDIR AQUÍ 🌽", mensajeWA: "Post-partido en Kukuruz Gourmet 🌽" },
-            { nombre: "Tienda de Padel", tag: "Amazon Influencer", logo: "https://cdn-icons-png.flaticon.com/512/3163/3163636.png", link: "https://www.amazon.com/shop/onfirepadel/list/3GFU63HCITYBZ", btn: "VER OFERTAS 🔥", mensajeWA: "Equípate en mi tienda de Amazon Padel 🚀" }
+            { nombre: "Kukuruz Gourmet", tag: "Aliado Oficial", logo: "https://github.com/wilsonmoreno76-a11y/torneosonfire/blob/main/logok.png?raw=true", link: "https://wa.me/573193490940", btn: "PEDIR AQUÍ 🌽", mensajeWA: "Post-partido en Kukuruz Gourmet 🌽" },
+            { nombre: "TIENDA DE PADEL", tag: "DESCUENTOS", logo: "https://cdn-icons-png.flaticon.com/512/3163/3163636.png", link: "https://www.amazon.com/shop/onfirepadel/list/3GFU63HCITYBZ", btn: "VER OFERTAS 🔥", mensajeWA: "Equípate en mi tienda de Amazon Padel 🚀" }
         ];
 
         let indexSponsor = 0;
@@ -110,17 +117,18 @@
         function rotarSponsor() {
             const link = document.getElementById('sponsor-link');
             if(!link) return;
-            link.style.opacity = '0';
-            setTimeout(() => {
-                const s = MIS_SPONSORS[indexSponsor];
-                document.getElementById('img-logo').src = s.logo;
-                document.getElementById('sponsor-name').innerText = s.nombre;
-                document.getElementById('sponsor-tag').innerText = s.tag;
-                document.getElementById('sponsor-btn').innerText = s.btn;
-                document.getElementById('sponsor-link').href = s.link;
-                link.style.opacity = '1';
-                indexSponsor = (indexSponsor + 1) % MIS_SPONSORS.length;
-            }, 500);
+            const s = MIS_SPONSORS[indexSponsor];
+            document.getElementById('img-logo').src = s.logo;
+            document.getElementById('sponsor-name').innerText = s.nombre;
+            document.getElementById('sponsor-tag').innerText = s.tag;
+            document.getElementById('sponsor-btn').innerText = s.btn;
+            document.getElementById('sponsor-link').href = s.link;
+            indexSponsor = (indexSponsor + 1) % MIS_SPONSORS.length;
+        }
+
+        function trackSponsorClick() {
+            const currentSponsor = MIS_SPONSORS[(indexSponsor === 0) ? MIS_SPONSORS.length - 1 : indexSponsor - 1];
+            gtag('event', 'clic_patrocinador', { 'nombre_sponsor': currentSponsor.nombre });
         }
 
         function setModo(m) { 
@@ -128,7 +136,7 @@
             ['btn-parejas', 'btn-individual', 'btn-pozo'].forEach(id => {
                 const btn = document.getElementById(id);
                 const isSelected = id.includes(m);
-                btn.className = isSelected ? 'py-3 rounded-lg font-bold text-[10px] border-2 border-orange-500 bg-orange-500 text-white' : 'py-3 rounded-lg font-bold text-[10px] border-2 border-slate-700 text-white uppercase';
+                btn.className = isSelected ? 'py-3 rounded-lg font-bold text-[10px] border-2 border-orange-500 bg-orange-500 text-white uppercase' : 'py-3 rounded-lg font-bold text-[10px] border-2 border-slate-700 text-white uppercase';
             });
             crearInputsNombres(); 
         }
@@ -138,7 +146,7 @@
             const grid = document.getElementById('grid-nombres');
             if(!n) return; grid.innerHTML = ''; state.jugadores = [];
             for(let i=0; i<n; i++) {
-                let def = state.modo === 'pozo' || state.modo === 'parejas' ? `PAREJA ${i+1}` : `JUGADOR ${i+1}`;
+                let def = (state.modo === 'parejas' || state.modo === 'pozo') ? `PAREJA ${i+1}` : `JUGADOR ${i+1}`;
                 state.jugadores.push({ id: i, nombre: def, pts: 0, wins: 0 });
                 grid.innerHTML += `<input type="text" placeholder="${def}" oninput="updateNombre(${i}, this.value)" class="onfire-input p-3 text-[10px] font-bold uppercase">`;
             }
@@ -159,16 +167,21 @@
 
         function renderRonda() {
             const container = document.getElementById('pistas-container');
-            container.innerHTML = '';
+            const byeContainer = document.getElementById('bye-container');
+            container.innerHTML = ''; byeContainer.innerHTML = ''; byeContainer.classList.add('hidden');
             document.getElementById('label-ronda').innerText = `RONDA ${state.ronda}`;
             
             let matches = [];
+            let resting = [];
+
             if(state.modo === 'pozo') {
                 for(let i=0; i < state.pistasMax * 2; i += 2) {
                     if(state.pozoMapping[i] !== undefined && state.pozoMapping[i+1] !== undefined) {
                         matches.push({ t1: [state.pozoMapping[i]], t2: [state.pozoMapping[i+1]] });
                     }
                 }
+                const playingIds = matches.flatMap(m => [...m.t1, ...m.t2]);
+                resting = state.pozoMapping.filter(id => !playingIds.includes(id));
             } else {
                 let ids = state.jugadores.map(j => j.id); if(ids.length % 2 !== 0) ids.push(-1);
                 let rotated = [ids[0], ...rotateArray(ids.slice(1), state.ronda - 1)];
@@ -176,27 +189,30 @@
                 for(let i=0; i<rotated.length/2; i++) {
                     let a = rotated[i], b = rotated[rotated.length-1-i];
                     if(a !== -1 && b !== -1) pairings.push([a, b]);
+                    else if (a === -1) resting.push(b); else if (b === -1) resting.push(a);
                 }
                 matches = state.modo === 'individual' ? [] : pairings.map(p => ({t1:[p[0]], t2:[p[1]]}));
                 if(state.modo === 'individual') {
-                    for(let i=0; i<pairings.length; i+=2) if(i+1 < pairings.length) matches.push({t1:pairings[i], t2:pairings[i+1]});
+                    for(let i=0; i<pairings.length; i+=2) if(i+1 < pairings.length) matches.push({t1:pairings[i], t2:pairings[i+1]}); else resting.push(...pairings[i]);
                 }
             }
 
-            matches.slice(0, state.pistasMax).forEach((m, idx) => {
-                const key = `r${state.ronda}c${idx}`;
-                if(!state.partidos[key]) state.partidos[key] = {s1:0, s2:0};
-                const val1 = state.partidos[key].s1 || '';
-                const val2 = state.partidos[key].s2 || '';
-                container.innerHTML += `<div class="onfire-card p-4 border-l-4 border-orange-500 relative"><span class="pista-badge absolute -top-2 left-4 font-black">CANCHA ${idx+1}</span><div class="flex items-center gap-2 mt-2"><div class="flex-1 text-right font-black text-[10px] uppercase text-white">${m.t1.map(id=>state.jugadores[id].nombre).join("/")}</div><div class="flex gap-1"><input type="number" value="${val1}" oninput="saveScore('${key}',1,this.value,${JSON.stringify(m.t1)},${JSON.stringify(m.t2)})" class="onfire-input w-10 h-10 font-black text-orange-500"><input type="number" value="${val2}" oninput="saveScore('${key}',2,this.value,${JSON.stringify(m.t1)},${JSON.stringify(m.t2)})" class="onfire-input w-10 h-10 font-black text-orange-500"></div><div class="flex-1 text-left font-black text-[10px] uppercase text-white">${m.t2.map(id=>state.jugadores[id].nombre).join("/")}</div></div></div>`;
+            const playing = matches.slice(0, state.pistasMax);
+            if(resting.length > 0) {
+                byeContainer.classList.remove('hidden');
+                byeContainer.innerHTML = `DESCANSA: ${resting.map(id => state.jugadores[id].nombre).join(", ")}`;
+            }
+
+            playing.forEach((m, idx) => {
+                const key = `r${state.ronda}c${idx}`; if(!state.partidos[key]) state.partidos[key] = {s1:0, s2:0};
+                container.innerHTML += `<div class="onfire-card p-4 border-l-4 border-orange-500 relative"><span class="pista-badge absolute -top-2 left-4 font-black">CANCHA ${idx+1}</span><div class="flex items-center gap-2 mt-2"><div class="flex-1 text-right font-black text-[10px] uppercase text-white">${m.t1.map(id=>state.jugadores[id].nombre).join("/")}</div><div class="flex gap-1"><input type="number" placeholder="0" value="${state.partidos[key].s1 || ''}" oninput="saveScore('${key}',1,this.value,${JSON.stringify(m.t1)},${JSON.stringify(m.t2)})" class="onfire-input w-10 h-10 font-black text-orange-500"><input type="number" placeholder="0" value="${state.partidos[key].s2 || ''}" oninput="saveScore('${key}',2,this.value,${JSON.stringify(m.t1)},${JSON.stringify(m.t2)})" class="onfire-input w-10 h-10 font-black text-orange-500"></div><div class="flex-1 text-left font-black text-[10px] uppercase text-white">${m.t2.map(id=>state.jugadores[id].nombre).join("/")}</div></div></div>`;
             });
             updateRanking();
         }
 
         function saveScore(k, t, v, i1, i2) { 
             state.partidos[k][`s${t}`] = parseInt(v)||0; 
-            state.partidos[k].ids1 = i1; 
-            state.partidos[k].ids2 = i2; 
+            state.partidos[k].ids1 = i1; state.partidos[k].ids2 = i2; 
             updateRanking(); saveLocal(); 
         }
 
@@ -206,24 +222,22 @@
         }
 
         function procesarSubeBaja() {
-            let nextMapping = [...state.pozoMapping];
+            let nextMap = [...state.pozoMapping];
             for(let i=0; i < state.pistasMax; i++) {
-                const key = `r${state.ronda}c${i}`;
-                const p = state.partidos[key];
+                const p = state.partidos[`r${state.ronda}c${i}`];
                 if(!p) continue;
-                const idxT1 = i * 2; const idxT2 = i * 2 + 1;
+                const iT1 = i * 2; const iT2 = i * 2 + 1;
                 const winT1 = p.s1 > p.s2;
-                if(i === 0) { // Cancha 1
-                    if(!winT1) [nextMapping[idxT1], nextMapping[idxT2+1]] = [nextMapping[idxT2+1], nextMapping[idxT1]];
-                } else if (i === state.pistasMax - 1) { // Última cancha
-                    if(winT1) [nextMapping[idxT1], nextMapping[idxT1-1]] = [nextMapping[idxT1-1], nextMapping[idxT1]];
-                    else [nextMapping[idxT2], nextMapping[idxT2-2]] = [nextMapping[idxT2-2], nextMapping[idxT2]];
-                } else { // Canchas intermedias
-                    if(winT1) [nextMapping[idxT1], nextMapping[idxT1-1]] = [nextMapping[idxT1-1], nextMapping[idxT1]];
-                    else [nextMapping[idxT2], nextMapping[idxT2+1]] = [nextMapping[idxT2+1], nextMapping[idxT2]];
+                if(i === 0) { // Cancha 1: Perdedor baja
+                    if(!winT1) [nextMap[iT1], nextMap[iT1+2]] = [nextMap[iT1+2], nextMap[iT1]];
+                } else if (i === state.pistasMax - 1) { // Última cancha: Ganador sube
+                    if(winT1) [nextMap[iT1], nextMap[iT1-1]] = [nextMap[iT1-1], nextMap[iT1]];
+                } else { // Intermedias: Ganador sube, perdedor baja
+                    if(winT1) [nextMap[iT1], nextMap[iT1-1]] = [nextMap[iT1-1], nextMap[iT1]];
+                    else [nextMap[iT2], nextMap[iT2+1]] = [nextMap[iT2+1], nextMap[iT2]];
                 }
             }
-            state.pozoMapping = nextMapping;
+            state.pozoMapping = nextMap;
         }
 
         function updateRanking() {
@@ -237,15 +251,28 @@
                 }
             });
             const sorted = [...state.jugadores].sort((a,b) => b.wins - a.wins || b.pts - a.pts);
-            document.getElementById('lista-ranking').innerHTML = sorted.map((j, i) => `<div class="flex justify-between p-2 rounded ${i%2===0?'bg-slate-800/30':''}"><span>${i+1}. ${j.nombre} (${j.wins} PG)</span><span class="text-orange-500 font-black">${j.pts}</span></div>`).join("");
+            document.getElementById('lista-ranking').innerHTML = sorted.map((j, i) => `<div class="flex justify-between p-2 rounded ${i%2===0?'bg-slate-800/30':''}"><span>${i+1}. ${j.nombre} ${j.wins > 0 ? '('+j.wins+' PG)':''}</span><span class="font-black text-orange-500">${j.pts}</span></div>`).join("");
             if(sorted[0]) document.getElementById('name-1').innerText = sorted[0].nombre;
             if(sorted[1]) document.getElementById('name-2').innerText = sorted[1].nombre;
             if(sorted[2]) document.getElementById('name-3').innerText = sorted[2].nombre;
         }
 
-        function rotateArray(arr, k) { k = k % arr.length; return arr.slice(k).concat(arr.slice(0, k)); }
+        function shareWhatsApp() {
+            const sorted = [...state.jugadores].sort((a,b) => b.wins - a.wins || b.pts - a.pts);
+            const currentIdx = (indexSponsor === 0) ? MIS_SPONSORS.length - 1 : indexSponsor - 1;
+            const s = MIS_SPONSORS[currentIdx];
+            gtag('event', 'compartir_ranking', { 'metodo': 'whatsapp', 'torneo': state.nombreTorneo });
+            let msg = `🔥 *${state.nombreTorneo || 'RANKING ON FIRE'}* 🔥%0A%0A`;
+            sorted.slice(0, 10).forEach((j, i) => {
+                let icon = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : "🎾";
+                msg += `${icon} *${j.nombre}*: ${j.wins} PG / ${j.pts} pts%0A`;
+            });
+            msg += `%0A🌽 _${s.mensajeWA}_%0A👉 Info: ${s.link}%0A%0A🚀 onfirepadel.com`;
+            window.open(`https://wa.me/?text=${msg}`);
+        }
+
+        function confirmarReinicio() { if(confirm("¿Reiniciar torneo?")) { localStorage.removeItem('onfire_state'); location.reload(); } }
         function saveLocal() { localStorage.setItem('onfire_state', JSON.stringify(state)); }
-        function confirmarReinicio() { if(confirm("¿Reiniciar?")) { localStorage.removeItem('onfire_state'); location.reload(); } }
         function loadLocal() {
             const saved = localStorage.getItem('onfire_state');
             if(saved) {
@@ -253,12 +280,8 @@
                 if(parsed.activo && confirm("¿Recuperar torneo?")) { state = parsed; iniciarTorneo(); }
             }
         }
-        function shareWhatsApp() {
-            const sorted = [...state.jugadores].sort((a,b) => b.wins - a.wins || b.pts - a.pts);
-            let msg = `🔥 *${state.nombreTorneo}* 🔥%0A%0A`;
-            sorted.slice(0, 10).forEach((j, i) => { msg += `${i+1}. *${j.nombre}*: ${j.wins} Victories / ${j.pts} pts%0A`; });
-            window.open(`https://wa.me/?text=${msg}`);
-        }
+        function rotateArray(arr, k) { k = k % arr.length; return arr.slice(k).concat(arr.slice(0, k)); }
+        function cambiarRonda(v) { state.ronda += v; renderRonda(); window.scrollTo(0,0); }
 
         window.onload = () => { rotarSponsor(); setInterval(rotarSponsor, 6000); loadLocal(); };
     </script>
