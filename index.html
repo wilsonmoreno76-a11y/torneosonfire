@@ -11,7 +11,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>On Fire Padel - Elite System V1.2.3</title>
+    <title>On Fire Padel - Elite System V1.2.4</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -112,7 +112,8 @@
         ];
 
         let indexSponsor = 0;
-        let state = { nombreTorneo: '', modo: 'parejas', jugadores: [], ronda: 1, pistasMax: 3, partidos: {}, activo: false, pozoMapping: [] };
+        // Agregado historyMapping para guardar las posiciones por ronda
+        let state = { nombreTorneo: '', modo: 'parejas', jugadores: [], ronda: 1, pistasMax: 3, partidos: {}, activo: false, pozoMapping: [], historyMapping: {} };
 
         function rotarSponsor() {
             const link = document.getElementById('sponsor-link');
@@ -153,13 +154,15 @@
 
         function updateNombre(id, val) { state.jugadores[id].nombre = val.toUpperCase(); saveLocal(); }
 
-        // CORRECCIÓN AQUÍ: Agregado parámetro 'isRecovery' para no borrar los datos al cargar
         function iniciarTorneo(isRecovery = false) {
             if(!isRecovery) {
                 state.nombreTorneo = document.getElementById('input-torneo-name').value.toUpperCase() || 'DIGITAL BOARD';
                 state.pistasMax = parseInt(document.getElementById('pistas-limit').value) || 3;
                 state.activo = true;
-                if(state.modo === 'pozo') state.pozoMapping = state.jugadores.map(j => j.id);
+                if(state.modo === 'pozo') {
+                    state.pozoMapping = state.jugadores.map(j => j.id);
+                    state.historyMapping[1] = [...state.pozoMapping];
+                }
             }
             
             document.getElementById('display-torneo-name').innerText = state.nombreTorneo;
@@ -182,13 +185,16 @@
                 document.getElementById('btn-next').disabled = false;
                 document.getElementById('btn-prev').disabled = state.ronda <= 1;
                 
+                // Usamos el mapeo específico de esta ronda
+                let currentRoundMap = state.historyMapping[state.ronda] || state.pozoMapping;
+                
                 for(let i=0; i < state.pistasMax * 2; i += 2) {
-                    if(state.pozoMapping[i] !== undefined && state.pozoMapping[i+1] !== undefined) {
-                        matches.push({ t1: [state.pozoMapping[i]], t2: [state.pozoMapping[i+1]] });
+                    if(currentRoundMap[i] !== undefined && currentRoundMap[i+1] !== undefined) {
+                        matches.push({ t1: [currentRoundMap[i]], t2: [currentRoundMap[i+1]] });
                     }
                 }
                 const playingIds = matches.flatMap(m => [...m.t1, ...m.t2]);
-                resting = state.pozoMapping.filter(id => !playingIds.includes(id));
+                resting = currentRoundMap.filter(id => !playingIds.includes(id));
             } else {
                 let ids = state.jugadores.map(j => j.id); if(ids.length % 2 !== 0) ids.push(-1);
                 const maxRondas = ids.length - 1;
@@ -228,21 +234,26 @@
         }
 
         function cambiarRonda(v) {
-            if(v > 0 && state.modo === 'pozo') procesarSubeBaja();
-            state.ronda += v; renderRonda(); window.scrollTo(0,0);
+            if(v > 0 && state.modo === 'pozo') {
+                // Solo procesamos el movimiento si no existe ya un mapeo para la siguiente ronda
+                if (!state.historyMapping[state.ronda + 1]) {
+                    procesarSubeBaja();
+                }
+            }
+            state.ronda += v; 
+            renderRonda(); 
+            window.scrollTo(0,0);
         }
 
         function procesarSubeBaja() {
-            let currentMapping = [...state.pozoMapping];
+            let currentMapping = [...state.historyMapping[state.ronda]];
             let winners = [];
             let losers = [];
             
             for(let i=0; i < state.pistasMax; i++) {
                 const p = state.partidos[`r${state.ronda}c${i}`];
-                if(!p) {
-                    winners.push(currentMapping[i*2]);
-                    losers.push(currentMapping[i*2+1]);
-                } else if(p.s1 > p.s2) {
+                // Si no hay puntos, el primero de la lista se considera ganador por defecto para no romper el flujo
+                if(!p || p.s1 >= p.s2) {
                     winners.push(currentMapping[i*2]);
                     losers.push(currentMapping[i*2+1]);
                 } else {
@@ -258,20 +269,24 @@
                 nextMap[i*2] = losers[i-1];
             }
             nextMap[state.pistasMax * 2 - 1] = losers[state.pistasMax - 1];
+            
+            // Mantener a los que están en espera en su sitio
             for(let i = state.pistasMax * 2; i < currentMapping.length; i++) {
                 nextMap[i] = currentMapping[i];
             }
-            state.pozoMapping = nextMap;
+            
+            state.historyMapping[state.ronda + 1] = nextMap;
+            state.pozoMapping = nextMap; // Para compatibilidad
         }
 
         function updateRanking() {
             state.jugadores.forEach(j => { j.pts = 0; j.wins = 0; });
             Object.values(state.partidos).forEach(p => { 
                 if(p.ids1){ 
-                    p.ids1.forEach(id => state.jugadores[id].pts += p.s1); 
-                    p.ids2.forEach(id => state.jugadores[id].pts += p.s2);
-                    if(p.s1 > p.s2) p.ids1.forEach(id => state.jugadores[id].wins++);
-                    else if(p.s2 > p.s1) p.ids2.forEach(id => state.jugadores[id].wins++);
+                    p.ids1.forEach(id => { if(id !== -1) state.jugadores[id].pts += p.s1; }); 
+                    p.ids2.forEach(id => { if(id !== -1) state.jugadores[id].pts += p.s2; });
+                    if(p.s1 > p.s2) p.ids1.forEach(id => { if(id !== -1) state.jugadores[id].wins++; });
+                    else if(p.s2 > p.s1) p.ids2.forEach(id => { if(id !== -1) state.jugadores[id].wins++; });
                 }
             });
             const sorted = [...state.jugadores].sort((a,b) => b.wins - a.wins || b.pts - a.pts);
@@ -298,13 +313,17 @@
         function confirmarReinicio() { if(confirm("¿Reiniciar torneo?")) { localStorage.removeItem('onfire_state'); location.reload(); } }
         function saveLocal() { localStorage.setItem('onfire_state', JSON.stringify(state)); }
         
-        // CORRECCIÓN AQUÍ: Se asegura de pasar 'true' a iniciarTorneo
         function loadLocal() {
             const saved = localStorage.getItem('onfire_state');
             if(saved) {
                 const parsed = JSON.parse(saved);
                 if(parsed.activo && confirm("¿Recuperar torneo en curso?")) { 
                     state = parsed; 
+                    // Si es una versión vieja sin historyMapping, lo inicializamos
+                    if(!state.historyMapping) {
+                        state.historyMapping = {};
+                        state.historyMapping[state.ronda] = [...state.pozoMapping];
+                    }
                     iniciarTorneo(true); 
                 }
             }
