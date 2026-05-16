@@ -11,7 +11,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>On Fire Padel - Elite System V1.2.7</title>
+    <title>On Fire Padel - Elite System V1.2.8</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -90,7 +90,7 @@
 
             <div class="max-w-2xl mx-auto">
                 <a href="https://wa.me/573053114119?text=Hola%20On%20Fire%20Padel,%20me%20interesa%20pautar%20mi%20marca%20en%20la%20App%20Elite%20System." target="_blank" class="block bg-gradient-to-r from-orange-500 to-amber-500 rounded-xl p-3 text-center border border-orange-400/30 shadow-md transition-transform hover:scale-[1.01] active:scale-[0.99]">
-                    <p class="text-xs font-black uppercase tracking-wider text-slate-950">🔥 !TU MARCA AQUÍ¡ CONTACTANOS 🔥</p>
+                    <p class="text-xs font-black uppercase tracking-wider text-slate-950">🔥 ¡TU MARCA AQUÍ! CONTACTANOS 🔥</p>
                     <p class="text-[10px] font-medium text-white/90">Llega directamente a cientos de jugadores de pádel en cada torneo</p>
                 </a>
             </div>
@@ -192,6 +192,16 @@
             if(!isRecovery) saveLocal();
         }
 
+        // Función auxiliar para formatear y apilar cualquier string de nombres
+        function formatearNombresApilados(arregloIds) {
+            // Mapea los IDs a sus respectivos nombres de jugador
+            let nombresSucios = arregloIds.map(id => state.jugadores[id] ? state.jugadores[id].nombre : '').join(" / ");
+            // Divide dinámicamente si el usuario usó barras, guiones o espacios extras y limpia los espacios vacíos
+            let listaNombres = nombresSucios.split(/[\/\-\+]/).map(n => n.trim()).filter(n => n.length > 0);
+            // Une con un salto de línea HTML (<br>) para obligar la estructura vertical limpia
+            return listaNombres.join("<br>");
+        }
+
         function renderRonda() {
             const container = document.getElementById('pistas-container');
             const byeContainer = document.getElementById('bye-container');
@@ -236,17 +246,16 @@
             const playing = matches.slice(0, state.pistasMax);
             if(resting.length > 0) {
                 byeContainer.classList.remove('hidden');
-                byeContainer.innerHTML = `ESPERA: ${resting.map(id => state.jugadores[id].nombre).join(", ")}`;
+                byeContainer.innerHTML = `ESPERA: ${resting.map(id => state.jugadores[id] ? state.jugadores[id].nombre : '').join(", ")}`;
             }
 
             playing.forEach((m, idx) => {
                 const key = `r${state.ronda}c${idx}`; if(!state.partidos[key]) state.partidos[key] = {s1:0, s2:0};
                 
-                // Mapeamos los nombres para pasarlos a bloques limpios
-                const nombresT1 = m.t1.map(id => state.jugadores[id].nombre).join("<br>");
-                const nombresT2 = m.t2.map(id => state.jugadores[id].nombre).join("<br>");
+                // MEJORA DEFINITIVA: Formateo vertical automático para todos los modos (Parejas, Individual y Sube/Baja)
+                const nombresT1 = formatearNombresApilados(m.t1);
+                const nombresT2 = formatearNombresApilados(m.t2);
 
-                /* AJUSTE VISUAL: Nombres apilados en bloque vertical (<br>) para evitar distorsiones con letras grandes */
                 container.innerHTML += `
                 <div class="onfire-card p-4 border-l-4 border-orange-500 relative">
                     <span class="pista-badge absolute -top-2 left-4 font-black">CANCHA ${idx+1}</span>
@@ -320,10 +329,10 @@
             state.jugadores.forEach(j => { j.pts = 0; j.wins = 0; });
             Object.values(state.partidos).forEach(p => { 
                 if(p.ids1){ 
-                    p.ids1.forEach(id => { if(id !== -1) state.jugadores[id].pts += p.s1; }); 
-                    p.ids2.forEach(id => { if(id !== -1) state.jugadores[id].pts += p.s2; });
-                    if(p.s1 > p.s2) p.ids1.forEach(id => { if(id !== -1) state.jugadores[id].wins++; });
-                    else if(p.s2 > p.s1) p.ids2.forEach(id => { if(id !== -1) state.jugadores[id].wins++; });
+                    p.ids1.forEach(id => { if(id !== -1 && state.jugadores[id]) state.jugadores[id].pts += p.s1; }); 
+                    p.ids2.forEach(id => { if(id !== -1 && state.jugadores[id]) state.jugadores[id].pts += p.s2; });
+                    if(p.s1 > p.s2) p.ids1.forEach(id => { if(id !== -1 && state.jugadores[id]) state.jugadores[id].wins++; });
+                    else if(p.s2 > p.s1) p.ids2.forEach(id => { if(id !== -1 && state.jugadores[id]) state.jugadores[id].wins++; });
                 }
             });
             const sorted = [...state.jugadores].sort((a,b) => b.wins - a.wins || b.pts - a.pts);
