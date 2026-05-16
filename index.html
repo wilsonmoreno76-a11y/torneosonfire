@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-T2DYDKZDVV"></script>
@@ -11,12 +11,12 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>On Fire Padel - Elite System V1.2.5</title>
+    <title>On Fire Padel - Elite System V1.2.6</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --onfire-orange: #f97316; --onfire-dark: #0f172a; --onfire-card: #1e293b; }
-        body { background-color: var(--onfire-dark); color: white; font-family: 'Inter', sans-serif; min-height: 100dvh; }
+        body { background-color: var(--onfire-dark); color: white; font-family: 'Inter', sans-serif; min-height: 100dvh; display: flex; flex-direction: column; }
         .onfire-card { background: var(--onfire-card); border: 1px solid #334155; border-radius: 1rem; }
         .onfire-input { background: #334155; border: 1px solid #475569; color: white; border-radius: 0.5rem; text-align: center; }
         .onfire-btn { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); font-weight: 800; text-transform: uppercase; border-radius: 0.75rem; transition: transform 0.1s; }
@@ -30,80 +30,101 @@
         .sponsor-logo { width: 48px; height: 48px; object-fit: contain; }
     </style>
 </head>
-<body class="p-4 pb-10">
-    <header class="text-center mb-4">
-        <h1 class="text-3xl font-black italic uppercase tracking-tighter text-white">ON FIRE <span class="text-orange-500">PADEL</span></h1>
-        
-        <div id="sponsor-space" class="mt-4 max-w-md mx-auto h-[85px]">
-            <a id="sponsor-link" href="#" target="_blank" onclick="trackSponsorClick()" class="block">
-                <div class="sponsor-banner p-3 flex items-center justify-between gap-3">
-                    <div class="flex items-center gap-3">
-                        <div class="bg-white p-1 rounded-lg">
-                            <img id="img-logo" src="" alt="Logo" class="sponsor-logo">
+<body class="p-4 pb-20">
+    <main class="flex-grow">
+        <header class="text-center mb-4">
+            <h1 class="text-3xl font-black italic uppercase tracking-tighter text-white">ON FIRE <span class="text-orange-500">PADEL</span></h1>
+            
+            <div id="sponsor-space" class="mt-4 max-w-md mx-auto h-[85px]">
+                <a id="sponsor-link" href="#" target="_blank" onclick="trackSponsorClick()" class="block">
+                    <div class="sponsor-banner p-3 flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-white p-1 rounded-lg">
+                                <img id="img-logo" src="" alt="Logo" class="sponsor-logo">
+                            </div>
+                            <div class="text-left">
+                                <p id="sponsor-tag" class="text-[9px] text-orange-600 font-black uppercase leading-none"></p>
+                                <p id="sponsor-name" class="text-[14px] font-black uppercase text-slate-900 tracking-tighter"></p>
+                            </div>
                         </div>
-                        <div class="text-left">
-                            <p id="sponsor-tag" class="text-[9px] text-orange-600 font-black uppercase leading-none"></p>
-                            <p id="sponsor-name" class="text-[14px] font-black uppercase text-slate-900 tracking-tighter"></p>
-                        </div>
+                        <span id="sponsor-btn" class="text-[10px] bg-orange-500 text-white px-3 py-2 rounded-lg font-black uppercase italic animate-pulse"></span>
                     </div>
-                    <span id="sponsor-btn" class="text-[10px] bg-orange-500 text-white px-3 py-2 rounded-lg font-black uppercase italic animate-pulse"></span>
+                </a>
+            </div>
+
+            <div class="flex flex-col items-center justify-center gap-1 mt-6">
+                <a href="https://www.instagram.com/onfirepadel" target="_blank" class="flex items-center gap-2 bg-slate-800/50 px-4 py-1 rounded-full border border-white/10">
+                    <i class="fab fa-instagram text-orange-500"></i>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-white">@onfirepadel</span>
+                </a>
+                <p id="display-torneo-name" class="text-[11px] text-slate-500 font-bold uppercase tracking-[0.2em] mt-2 italic">POZO SUBE Y BAJA</p>
+            </div>
+        </header>
+
+        <section id="setup-section" class="max-w-xl mx-auto space-y-4">
+            <div class="onfire-card p-6">
+                <div class="mb-4">
+                    <label class="block text-[10px] font-bold text-slate-400 mb-1 uppercase">Nombre del Torneo</label>
+                    <input type="text" id="input-torneo-name" placeholder="EJ: COPA ON FIRE" class="onfire-input w-full p-3 text-lg font-black uppercase border-orange-500/50">
                 </div>
-            </a>
-        </div>
+                <div class="grid grid-cols-3 gap-2 mb-4">
+                    <button id="btn-parejas" onclick="setModo('parejas')" class="py-3 rounded-lg font-bold text-[10px] border-2 border-orange-500 bg-orange-500 text-white uppercase">Parejas</button>
+                    <button id="btn-individual" onclick="setModo('individual')" class="py-3 rounded-lg font-bold text-[10px] border-2 border-slate-700 text-white uppercase">Individual</button>
+                    <button id="btn-pozo" onclick="setModo('pozo')" class="py-3 rounded-lg font-bold text-[10px] border-2 border-slate-700 text-white uppercase">Sube/Baja</button>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div><label class="block text-[10px] font-bold text-slate-400 mb-1 uppercase">Total Equipos</label><input type="number" id="num-total" placeholder="8" oninput="crearInputsNombres()" class="onfire-input w-full p-3 text-xl font-black"></div>
+                    <div><label class="block text-[10px] font-bold text-slate-400 mb-1 uppercase">Canchas</label><input type="number" id="pistas-limit" placeholder="4" class="onfire-input w-full p-3 text-xl font-black text-orange-500"></div>
+                </div>
+            </div>
+            <div id="grid-nombres" class="grid grid-cols-2 gap-2"></div>
+            <button onclick="iniciarTorneo()" class="onfire-btn w-full py-5 text-xl shadow-lg shadow-orange-500/20 text-white">GENERAR TORNEO 🔥</button>
+        </section>
 
-        <div class="flex flex-col items-center justify-center gap-1 mt-6">
-            <a href="https://www.instagram.com/onfirepadel" target="_blank" class="flex items-center gap-2 bg-slate-800/50 px-4 py-1 rounded-full border border-white/10">
-                <i class="fab fa-instagram text-orange-500"></i>
-                <span class="text-[10px] font-black uppercase tracking-widest text-white">@onfirepadel</span>
-            </a>
-            <p id="display-torneo-name" class="text-[11px] text-slate-500 font-bold uppercase tracking-[0.2em] mt-2 italic">POZO SUBE Y BAJA</p>
-        </div>
-    </header>
+        <section id="tournament-section" class="hidden max-w-2xl mx-auto space-y-6">
+            <div class="flex items-center justify-between gap-2">
+                <button onclick="cambiarRonda(-1)" id="btn-prev" class="bg-slate-800 p-4 rounded-xl font-bold btn-nav"><i class="fas fa-chevron-left"></i></button>
+                <div id="label-ronda" class="bg-orange-600 flex-1 text-center py-4 rounded-xl font-black text-xl italic uppercase">RONDA 1</div>
+                <button onclick="cambiarRonda(1)" id="btn-next" class="bg-slate-800 p-4 rounded-xl font-bold btn-nav"><i class="fas fa-chevron-right"></i></button>
+            </div>
 
-    <section id="setup-section" class="max-w-xl mx-auto space-y-4">
-        <div class="onfire-card p-6">
-            <div class="mb-4">
-                <label class="block text-[10px] font-bold text-slate-400 mb-1 uppercase">Nombre del Torneo</label>
-                <input type="text" id="input-torneo-name" placeholder="EJ: COPA ON FIRE" class="onfire-input w-full p-3 text-lg font-black uppercase border-orange-500/50">
+            <div class="max-w-2xl mx-auto">
+                <a href="https://wa.me/573193490940?text=Hola%20On%20Fire%20Padel,%20me%20interesa%20pautar%20mi%20marca%20en%20la%20App%20Elite%20System." target="_blank" class="block bg-gradient-to-r from-orange-500 to-amber-500 rounded-xl p-3 text-center border border-orange-400/30 shadow-md transition-transform hover:scale-[1.01] active:scale-[0.99]">
+                    <p class="text-xs font-black uppercase tracking-wider text-slate-950">🔥 ¿TU MARCA AQUÍ? CONTACTANOS 🔥</p>
+                    <p class="text-[10px] font-medium text-white/90">Llega directamente a cientos de jugadores de pádel en cada torneo</p>
+                </a>
             </div>
-            <div class="grid grid-cols-3 gap-2 mb-4">
-                <button id="btn-parejas" onclick="setModo('parejas')" class="py-3 rounded-lg font-bold text-[10px] border-2 border-orange-500 bg-orange-500 text-white uppercase">Parejas</button>
-                <button id="btn-individual" onclick="setModo('individual')" class="py-3 rounded-lg font-bold text-[10px] border-2 border-slate-700 text-white uppercase">Individual</button>
-                <button id="btn-pozo" onclick="setModo('pozo')" class="py-3 rounded-lg font-bold text-[10px] border-2 border-slate-700 text-white uppercase">Sube/Baja</button>
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div><label class="block text-[10px] font-bold text-slate-400 mb-1 uppercase">Total Equipos</label><input type="number" id="num-total" placeholder="8" oninput="crearInputsNombres()" class="onfire-input w-full p-3 text-xl font-black"></div>
-                <div><label class="block text-[10px] font-bold text-slate-400 mb-1 uppercase">Canchas</label><input type="number" id="pistas-limit" placeholder="4" class="onfire-input w-full p-3 text-xl font-black text-orange-500"></div>
-            </div>
-        </div>
-        <div id="grid-nombres" class="grid grid-cols-2 gap-2"></div>
-        <button onclick="iniciarTorneo()" class="onfire-btn w-full py-5 text-xl shadow-lg shadow-orange-500/20 text-white">GENERAR TORNEO 🔥</button>
-    </section>
 
-    <section id="tournament-section" class="hidden max-w-2xl mx-auto space-y-6">
-        <div class="flex items-center justify-between gap-2">
-            <button onclick="cambiarRonda(-1)" id="btn-prev" class="bg-slate-800 p-4 rounded-xl font-bold btn-nav"><i class="fas fa-chevron-left"></i></button>
-            <div id="label-ronda" class="bg-orange-600 flex-1 text-center py-4 rounded-xl font-black text-xl italic uppercase">RONDA 1</div>
-            <button onclick="cambiarRonda(1)" id="btn-next" class="bg-slate-800 p-4 rounded-xl font-bold btn-nav"><i class="fas fa-chevron-right"></i></button>
-        </div>
-        <div id="pistas-container" class="space-y-4"></div>
-        <div id="bye-container" class="hidden bg-slate-800/50 p-3 rounded-xl border border-dashed border-slate-600 text-center text-xs font-bold text-slate-400 italic"></div>
-        
-        <div id="podio-visual" class="onfire-card p-6 text-center">
-            <div class="flex items-end justify-center gap-2">
-                <div class="flex flex-col items-center"><span id="name-2" class="text-[10px] font-bold mb-2 w-20 truncate uppercase text-white">---</span><div class="podium-2 rounded-t-lg flex items-center justify-center text-2xl font-black text-white">2</div></div>
-                <div class="flex flex-col items-center"><span id="name-1" class="text-[12px] font-black mb-2 text-orange-500 w-24 truncate uppercase">---</span><div class="podium-1 rounded-t-lg flex items-center justify-center text-4xl font-black text-white">1</div></div>
-                <div class="flex flex-col items-center"><span id="name-3" class="text-[10px] font-bold mb-2 w-20 truncate uppercase text-white">---</span><div class="podium-3 rounded-t-lg flex items-center justify-center text-2xl font-black text-white">3</div></div>
+            <div id="pistas-container" class="space-y-4"></div>
+            <div id="bye-container" class="hidden bg-slate-800/50 p-3 rounded-xl border border-dashed border-slate-600 text-center text-xs font-bold text-slate-400 italic"></div>
+            
+            <div id="podio-visual" class="onfire-card p-6 text-center">
+                <div class="flex items-end justify-center gap-2">
+                    <div class="flex flex-col items-center"><span id="name-2" class="text-[10px] font-bold mb-2 w-20 truncate uppercase text-white">---</span><div class="podium-2 rounded-t-lg flex items-center justify-center text-2xl font-black text-white">2</div></div>
+                    <div class="flex flex-col items-center"><span id="name-1" class="text-[12px] font-black mb-2 text-orange-500 w-24 truncate uppercase">---</span><div class="podium-1 rounded-t-lg flex items-center justify-center text-4xl font-black text-white">1</div></div>
+                    <div class="flex flex-col items-center"><span id="name-3" class="text-[10px] font-bold mb-2 w-20 truncate uppercase text-white">---</span><div class="podium-3 rounded-t-lg flex items-center justify-center text-2xl font-black text-white">3</div></div>
+                </div>
             </div>
-        </div>
-        <div class="onfire-card p-4">
-            <div id="lista-ranking" class="space-y-2 mb-6 text-sm font-bold text-white"></div>
-            <div class="grid grid-cols-2 gap-2">
-                <button onclick="shareWhatsApp()" class="bg-green-600 p-3 rounded-lg font-black text-[11px] uppercase text-white">WhatsApp</button>
-                <button onclick="confirmarReinicio()" class="bg-slate-700 p-3 rounded-lg font-black text-[11px] uppercase text-slate-400">Reiniciar</button>
+            <div class="onfire-card p-4">
+                <div id="lista-ranking" class="space-y-2 mb-6 text-sm font-bold text-white"></div>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="shareWhatsApp()" class="bg-green-600 p-3 rounded-lg font-black text-[11px] uppercase text-white">WhatsApp</button>
+                    <button onclick="confirmarReinicio()" class="bg-slate-700 p-3 rounded-lg font-black text-[11px] uppercase text-slate-400">Reiniciar</button>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
+
+    <footer class="mt-12 text-center border-t border-slate-800 pt-6 pb-4">
+        <p class="text-[11px] font-bold tracking-widest text-slate-500 uppercase">Diseñada por ON FIRE PADEL</p>
+        <p class="text-[9px] text-slate-600 uppercase mt-1">© 2026 Todos los derechos reservados</p>
+    </footer>
+
+    <div class="fixed bottom-4 right-4 z-50">
+        <a href="https://wa.me/573193490940?text=Hola%20On%20Fire%20Padel,%20quiero%20dejar%20mi%20feedback/sugerencia%20sobre%20la%20App%20Elite%20System:" target="_blank" class="flex items-center justify-center w-12 h-12 bg-green-500 text-white rounded-full shadow-lg shadow-green-500/30 transition-transform hover:scale-110 active:scale-95 border border-white/20" title="Danos tu Feedback">
+            <i class="fab fa-whatsapp text-2xl"></i>
+        </a>
+    </div>
 
     <script>
         const MIS_SPONSORS = [
@@ -220,7 +241,8 @@
 
             playing.forEach((m, idx) => {
                 const key = `r${state.ronda}c${idx}`; if(!state.partidos[key]) state.partidos[key] = {s1:0, s2:0};
-                container.innerHTML += `<div class="onfire-card p-4 border-l-4 border-orange-500 relative"><span class="pista-badge absolute -top-2 left-4 font-black">CANCHA ${idx+1}</span><div class="flex items-center gap-2 mt-2"><div class="flex-1 text-right font-black text-[10px] uppercase text-white">${m.t1.map(id=>state.jugadores[id].nombre).join("/")}</div><div class="flex gap-1"><input type="number" placeholder="0" value="${state.partidos[key].s1 || ''}" oninput="saveScore('${key}',1,this.value,${JSON.stringify(m.t1)},${JSON.stringify(m.t2)})" class="onfire-input w-10 h-10 font-black text-orange-500"><input type="number" placeholder="0" value="${state.partidos[key].s2 || ''}" oninput="saveScore('${key}',2,this.value,${JSON.stringify(m.t1)},${JSON.stringify(m.t2)})" class="onfire-input w-10 h-10 font-black text-orange-500"></div><div class="flex-1 text-left font-black text-[10px] uppercase text-white">${m.t2.map(id=>state.jugadores[id].nombre).join("/")}</div></div></div>`;
+                /* MEJORA VISUAL: Nombres más grandes (text-sm md:text-base) y font-extrabold para lectura óptima en cancha */
+                container.innerHTML += `<div class="onfire-card p-4 border-l-4 border-orange-500 relative"><span class="pista-badge absolute -top-2 left-4 font-black">CANCHA ${idx+1}</span><div class="flex items-center gap-2 mt-2"><div class="flex-1 text-right font-extrabold text-sm md:text-base uppercase text-white tracking-tight">${m.t1.map(id=>state.jugadores[id].nombre).join("/")}</div><div class="flex gap-1"><input type="number" placeholder="0" value="${state.partidos[key].s1 || ''}" oninput="saveScore('${key}',1,this.value,${JSON.stringify(m.t1)},${JSON.stringify(m.t2)})" class="onfire-input w-10 h-10 font-black text-orange-500"><input type="number" placeholder="0" value="${state.partidos[key].s2 || ''}" oninput="saveScore('${key}',2,this.value,${JSON.stringify(m.t1)},${JSON.stringify(m.t2)})" class="onfire-input w-10 h-10 font-black text-orange-500"></div><div class="flex-1 text-left font-extrabold text-sm md:text-base uppercase text-white tracking-tight">${m.t2.map(id=>state.jugadores[id].nombre).join("/")}</div></div></div>`;
             });
             updateRanking();
         }
@@ -326,4 +348,4 @@
         window.onload = () => { rotarSponsor(); setInterval(rotarSponsor, 6000); loadLocal(); };
     </script>
 </body>
-</html>
+</html>             
