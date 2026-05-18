@@ -11,7 +11,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>On Fire Padel - Elite System V1.2.8</title>
+    <title>On Fire Padel - Elite System V1.2.9</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -26,8 +26,9 @@
         .podium-2 { background: linear-gradient(to top, #64748b, #94a3b8); height: 90px; width: 80px; }
         .podium-3 { background: linear-gradient(to top, #78350f, #b45309); height: 70px; width: 80px; }
         .btn-nav:disabled { opacity: 0.3; cursor: not-allowed; }
-        .sponsor-banner { background: white; color: #0f172a; border-radius: 1rem; box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3); min-height: 75px; }
-        .sponsor-logo { width: 48px; height: 48px; object-fit: contain; }
+        /* Estilos optimizados para el banner dinámico en la zona caliente */
+        .sponsor-hot-banner { background: white; color: #0f172a; border-radius: 0.75rem; box-shadow: 0 4px 20px rgba(249, 115, 22, 0.25); min-height: 65px; transition: all 0.2s ease-in-out; }
+        .sponsor-hot-logo { width: 40px; height: 40px; object-fit: contain; }
     </style>
 </head>
 <body class="p-4 pb-20">
@@ -35,24 +36,7 @@
         <header class="text-center mb-4">
             <h1 class="text-3xl font-black italic uppercase tracking-tighter text-white">ON FIRE <span class="text-orange-500">PADEL</span></h1>
             
-            <div id="sponsor-space" class="mt-4 max-w-md mx-auto h-[85px]">
-                <a id="sponsor-link" href="#" target="_blank" onclick="trackSponsorClick()" class="block">
-                    <div class="sponsor-banner p-3 flex items-center justify-between gap-3">
-                        <div class="flex items-center gap-3">
-                            <div class="bg-white p-1 rounded-lg">
-                                <img id="img-logo" src="" alt="Logo" class="sponsor-logo">
-                            </div>
-                            <div class="text-left">
-                                <p id="sponsor-tag" class="text-[9px] text-orange-600 font-black uppercase leading-none"></p>
-                                <p id="sponsor-name" class="text-[14px] font-black uppercase text-slate-900 tracking-tighter"></p>
-                            </div>
-                        </div>
-                        <span id="sponsor-btn" class="text-[10px] bg-orange-500 text-white px-3 py-2 rounded-lg font-black uppercase italic animate-pulse"></span>
-                    </div>
-                </a>
-            </div>
-
-            <div class="flex flex-col items-center justify-center gap-1 mt-6">
+            <div class="flex flex-col items-center justify-center gap-1 mt-4">
                 <a href="https://www.instagram.com/onfirepadel" target="_blank" class="flex items-center gap-2 bg-slate-800/50 px-4 py-1 rounded-full border border-white/10">
                     <i class="fab fa-instagram text-orange-500"></i>
                     <span class="text-[10px] font-black uppercase tracking-widest text-white">@onfirepadel</span>
@@ -81,7 +65,7 @@
             <button onclick="iniciarTorneo()" class="onfire-btn w-full py-5 text-xl shadow-lg shadow-orange-500/20 text-white">GENERAR TORNEO 🔥</button>
         </section>
 
-        <section id="tournament-section" class="hidden max-w-2xl mx-auto space-y-6">
+        <section id="tournament-section" class="hidden max-w-2xl mx-auto space-y-4">
             <div class="flex items-center justify-between gap-2">
                 <button onclick="cambiarRonda(-1)" id="btn-prev" class="bg-slate-800 p-4 rounded-xl font-bold btn-nav"><i class="fas fa-chevron-left"></i></button>
                 <div id="label-ronda" class="bg-orange-600 flex-1 text-center py-4 rounded-xl font-black text-xl italic uppercase">RONDA 1</div>
@@ -89,9 +73,20 @@
             </div>
 
             <div class="max-w-2xl mx-auto">
-                <a href="https://wa.me/573053114119?text=Hola%20On%20Fire%20Padel,%20me%20interesa%20pautar%20mi%20marca%20en%20la%20Web%20App%20OnFire." target="_blank" class="block bg-gradient-to-r from-orange-500 to-amber-500 rounded-xl p-3 text-center border border-orange-400/30 shadow-md transition-transform hover:scale-[1.01] active:scale-[0.99]">
-                    <p class="text-xs font-black uppercase tracking-wider text-slate-950">🔥 ¡TU MARCA AQUÍ! CONTACTANOS 🔥</p>
-                    <p class="text-[10px] font-medium text-white/90">Llega directamente a cientos de jugadores de pádel en cada torneo</p>
+                <a id="hot-sponsor-link" href="#" target="_blank" onclick="trackSponsorClick()" class="block transition-transform hover:scale-[1.01] active:scale-[0.99]">
+                    <div id="hot-sponsor-bg" class="sponsor-hot-banner p-3 flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-3">
+                            <div id="hot-logo-container" class="bg-white p-1 rounded-lg flex items-center justify-center">
+                                <img id="hot-img-logo" src="" alt="Logo" class="sponsor-hot-logo">
+                            </div>
+                            <div class="text-left">
+                                <p id="hot-sponsor-tag" class="text-[9px] text-orange-600 font-black uppercase leading-none"></p>
+                                <p id="hot-sponsor-name" class="text-[13px] font-black uppercase text-slate-900 tracking-tighter mt-0.5 leading-tight"></p>
+                                <p id="hot-sponsor-desc" class="text-[9px] font-medium text-slate-500 leading-none mt-0.5"></p>
+                            </div>
+                        </div>
+                        <span id="hot-sponsor-btn" class="text-[9px] bg-orange-500 text-white px-2.5 py-2 rounded-lg font-black uppercase italic tracking-tighter whitespace-nowrap animate-pulse"></span>
+                    </div>
                 </a>
             </div>
 
@@ -127,23 +122,56 @@
     </div>
 
     <script>
+        // Array de marcas unificado que incluye los patrocinadores y el espacio disponible de venta
         const MIS_SPONSORS = [
-            { nombre: "Kukuruz Gourmet", tag: "Aliado Oficial", logo: "https://github.com/wilsonmoreno76-a11y/torneosonfire/blob/main/logok.png?raw=true", link: "https://wa.me/573053114119", btn: "PEDIR AQUÍ 🌽", mensajeWA: "Post-partido en Kukuruz Gourmet 🌽" },
-            { nombre: "TIENDA DE PADEL", tag: "DESCUENTOS", logo: "https://cdn-icons-png.flaticon.com/512/3163/3163636.png", link: "https://www.amazon.com/shop/onfirepadel/list/3GFU63HCITYBZ", btn: "VER OFERTAS 🔥", mensajeWA: "Equípate en mi tienda de Amazon Padel 🚀" }
+            { nombre: "Kukuruz Gourmet", tag: "Aliado Oficial", desc: "La mejor experiencia gastronómica de Bogotá", logo: "https://github.com/wilsonmoreno76-a11y/torneosonfire/blob/main/logok.png?raw=true", link: "https://wa.me/573053114119", btn: "PEDIR AQUÍ 🌽", mensajeWA: "Post-partido en Kukuruz Gourmet 🌽",isSelfPromo: false },
+            { nombre: "TIENDA DE PADEL", tag: "DESCUENTOS", desc: "Equipamiento profesional al mejor precio", logo: "https://cdn-icons-png.flaticon.com/512/3163/3163636.png", link: "https://www.amazon.com/shop/onfirepadel/list/3GFU63HCITYBZ", btn: "VER OFERTAS 🔥", mensajeWA: "Equípate en mi tienda de Amazon Padel 🚀", isSelfPromo: false },
+            { nombre: "¿TU MARCA AQUÍ?", tag: "ESPACIO DISPONIBLE 🔥", desc: "Llega directamente a cientos de jugadores en cada torneo", logo: "🔥", link: "https://wa.me/573053114119?text=Hola%20On%20Fire%20Padel,%20me%20interesa%20pautar%20mi%20marca%20en%20la%20App%20Elite%20System.", btn: "CONTÁCTANOS 📲", mensajeWA: "", isSelfPromo: true }
         ];
 
         let indexSponsor = 0;
         let state = { nombreTorneo: '', modo: 'parejas', jugadores: [], ronda: 1, pistesMax: 3, partidos: {}, activo: false, pozoMapping: [], historyMapping: {} };
 
         function rotarSponsor() {
-            const link = document.getElementById('sponsor-link');
+            const link = document.getElementById('hot-sponsor-link');
             if(!link) return;
             const s = MIS_SPONSORS[indexSponsor];
-            document.getElementById('img-logo').src = s.logo;
-            document.getElementById('sponsor-name').innerText = s.nombre;
-            document.getElementById('sponsor-tag').innerText = s.tag;
-            document.getElementById('sponsor-btn').innerText = s.btn;
-            document.getElementById('sponsor-link').href = s.link;
+            
+            // Elementos del DOM
+            const bgContainer = document.getElementById('hot-sponsor-bg');
+            const logoContainer = document.getElementById('hot-logo-container');
+            const imgLogo = document.getElementById('hot-img-logo');
+            const tagEl = document.getElementById('hot-sponsor-tag');
+            const nameEl = document.getElementById('hot-sponsor-name');
+            const descEl = document.getElementById('hot-sponsor-desc');
+            const btnEl = document.getElementById('hot-sponsor-btn');
+
+            if(s.isSelfPromo) {
+                // Estilo llamativo On Fire para la autopropaganda
+                bgContainer.className = "sponsor-hot-banner p-3 flex items-center justify-between gap-3 bg-gradient-to-r from-orange-500 to-amber-500 border border-orange-400/30 text-white";
+                logoContainer.className = "bg-slate-950/20 p-2 rounded-lg flex items-center justify-center font-black text-lg";
+                logoContainer.innerHTML = s.logo; 
+                tagEl.className = "text-[9px] text-slate-950 font-black uppercase leading-none";
+                nameEl.className = "text-[13px] font-black uppercase text-white tracking-tighter mt-0.5 leading-tight";
+                descEl.className = "text-[9px] font-medium text-white/90 leading-none mt-0.5";
+                btnEl.className = "text-[9px] bg-slate-950 text-white px-2.5 py-2 rounded-lg font-black uppercase italic tracking-tighter whitespace-nowrap animate-pulse";
+            } else {
+                // Estilo limpio estándar para las marcas patrocinadoras
+                bgContainer.className = "sponsor-hot-banner p-3 flex items-center justify-between gap-3 bg-white text-slate-900";
+                logoContainer.className = "bg-white p-1 rounded-lg flex items-center justify-center border border-slate-100";
+                logoContainer.innerHTML = `<img id="hot-img-logo" src="${s.logo}" alt="Logo" class="sponsor-hot-logo">`;
+                tagEl.className = "text-[9px] text-orange-600 font-black uppercase leading-none";
+                nameEl.className = "text-[13px] font-black uppercase text-slate-900 tracking-tighter mt-0.5 leading-tight";
+                descEl.className = "text-[9px] font-medium text-slate-500 leading-none mt-0.5";
+                btnEl.className = "text-[9px] bg-orange-500 text-white px-2.5 py-2 rounded-lg font-black uppercase italic tracking-tighter whitespace-nowrap animate-pulse";
+            }
+
+            tagEl.innerText = s.tag;
+            nameEl.innerText = s.nombre;
+            descEl.innerText = s.desc;
+            btnEl.innerText = s.btn;
+            link.href = s.link;
+
             indexSponsor = (indexSponsor + 1) % MIS_SPONSORS.length;
         }
 
@@ -192,13 +220,9 @@
             if(!isRecovery) saveLocal();
         }
 
-        // Función auxiliar para formatear y apilar cualquier string de nombres
         function formatearNombresApilados(arregloIds) {
-            // Mapea los IDs a sus respectivos nombres de jugador
             let nombresSucios = arregloIds.map(id => state.jugadores[id] ? state.jugadores[id].nombre : '').join(" / ");
-            // Divide dinámicamente si el usuario usó barras, guiones o espacios extras y limpia los espacios vacíos
             let listaNombres = nombresSucios.split(/[\/\-\+]/).map(n => n.trim()).filter(n => n.length > 0);
-            // Une con un salto de línea HTML (<br>) para obligar la estructura vertical limpia
             return listaNombres.join("<br>");
         }
 
@@ -252,7 +276,6 @@
             playing.forEach((m, idx) => {
                 const key = `r${state.ronda}c${idx}`; if(!state.partidos[key]) state.partidos[key] = {s1:0, s2:0};
                 
-                // MEJORA DEFINITIVA: Formateo vertical automático para todos los modos (Parejas, Individual y Sube/Baja)
                 const nombresT1 = formatearNombresApilados(m.t1);
                 const nombresT2 = formatearNombresApilados(m.t2);
 
@@ -352,7 +375,7 @@
                 let icon = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : "🎾";
                 msg += `${icon} *${j.nombre}*: ${j.wins} PG / ${j.pts} pts%0A`;
             });
-            msg += `%0A🌽 _${s.mensajeWA}_%0A👉 Info: ${s.link}%0A%0A🚀 onfirepadel.com`;
+            msg += `%0A🚀 onfirepadel.com`;
             window.open(`https://wa.me/?text=${msg}`);
         }
 
